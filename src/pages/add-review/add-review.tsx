@@ -173,7 +173,7 @@ function AddReview() {
               type="radio"
               name="rating"
               defaultValue={8}
-              defaultChecked=""
+              defaultChecked={false}
             />
             <label className="rating__label" htmlFor="star-8">
               Rating 8
