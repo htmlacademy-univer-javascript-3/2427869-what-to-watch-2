@@ -14,10 +14,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App 
-      filmName = {defaultProps.filmName}
-      genre = {defaultProps.genre}
-      promoDate = {defaultProps.promoDate}
+    <App
+      filmName={defaultProps.filmName}
+      genre={defaultProps.genre}
+      promoDate={defaultProps.promoDate}
     />
   </React.StrictMode>
 );
