@@ -12,7 +12,7 @@ function MyList(props: IMyListPage) {
     if(!props.isAuth) {
       navigate('/login');
     }
-  }, []);
+  }, [navigate, props.isAuth]);
 
   return (
     <div className="user-page">

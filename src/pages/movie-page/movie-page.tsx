@@ -21,7 +21,6 @@ function MoviePage(props: IMoviePageProps) {
     return <NotFound404/>;
   }
 
-
   return (
     <>
       <section className="film-card film-card--full">
@@ -29,7 +28,7 @@ function MoviePage(props: IMoviePageProps) {
           <div className="film-card__bg">
             <img
               src="img/bg-the-grand-budapest-hotel.jpg"
-              alt="The Grand Budapest Hotel"
+              alt={movie.filmName}
             />
           </div>
           <h1 className="visually-hidden">WTW</h1>
@@ -222,7 +221,3 @@ function MoviePage(props: IMoviePageProps) {
 }
 
 export default MoviePage;
-function userParams(): { id: any; } {
-  throw new Error("Function not implemented.");
-}
-
