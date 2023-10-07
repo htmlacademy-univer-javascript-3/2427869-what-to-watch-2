@@ -1,4 +1,19 @@
-function MyList() {
+import {useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+
+interface IMyListPage {
+  isAuth: boolean;
+}
+
+function MyList(props: IMyListPage) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!props.isAuth) {
+      navigate('/login');
+    }
+  }, []);
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
