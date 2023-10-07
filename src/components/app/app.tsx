@@ -6,6 +6,8 @@ import NotFound404 from '../../pages/not-found-404/not-found-404';
 import MoviePage from '../../pages/movie-page/movie-page';
 import MoviePageReviews from '../../pages/movie-page-reviews/movie-page-reviews';
 import Player from '../../pages/player/player';
+import {AppRoutes, AuthStatus} from '../../constants/consts';
+import PrivateRouteMyListPage from '../private-route-my-list-page/private-route-my-list-page';
 
 interface IAppProps {
   filmName: string;
@@ -13,7 +15,7 @@ interface IAppProps {
   promoDate: number;
 }
 
-const mocks = [{
+const mocksMovies = [{
   id: '1',
   filmName: 'The Grand Budapest Hotel',
   genre: 'drama',
@@ -32,13 +34,26 @@ const mocks = [{
   promoDate: 2014
 }];
 
-const isAuth = false;
+const mocksPlayer = [
+  {
+    id: '1',
+    filmName: 'The Grand Budapest Hotel',
+    duration: '2:10:15',
+  },
+  {
+    id: '2',
+    filmName: 'The Grand Budapest Hotel 2',
+    duration: '1:10:37',
+  },
+];
+
+const isAuth = AuthStatus.NotAuth;
 
 function App(props: IAppProps) {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/">
+        <Route path={AppRoutes.Main}>
           <Route index element={
             <Main
               filmName={props.filmName}
@@ -47,14 +62,14 @@ function App(props: IAppProps) {
             />
           }
           />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/mylist" element={<MyList isAuth = {isAuth}/>} />
+          <Route path={AppRoutes.Login} element={<SignIn />} />
+          <Route path={AppRoutes.MyList} element={<PrivateRouteMyListPage authStatus = {isAuth} element={<MyList/>} />} />
 
-          <Route path="/films/:id" element={<MoviePage movies={mocks}/>} />
-          <Route path="/films/:id/review" element={<MoviePageReviews movies={mocks}/>} />
-          <Route path="/player/:id" element={<Player />} />
+          <Route path={AppRoutes.Movie} element={<MoviePage movies={mocksMovies}/>} />
+          <Route path={AppRoutes.MovieReviews} element={<MoviePageReviews movies={mocksMovies}/>} />
+          <Route path={AppRoutes.Player} element={<Player movies={mocksPlayer}/>} />
 
-          <Route path="*" element={<NotFound404 />} />
+          <Route path={AppRoutes.NotFound} element={<NotFound404 />} />
         </Route>
       </Routes>
     </BrowserRouter>
