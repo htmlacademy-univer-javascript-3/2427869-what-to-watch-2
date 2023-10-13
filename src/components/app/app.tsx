@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from '../../pages/main/main';
 import SignIn from '../../pages/sign-in/sign-in';
-import MyList from '../../pages/my-list/my-list';
 import NotFound404 from '../../pages/not-found-404/not-found-404';
 import MoviePage from '../../pages/movie-page/movie-page';
 import MoviePageReviews from '../../pages/movie-page-reviews/movie-page-reviews';
@@ -47,7 +46,7 @@ const mocksPlayer = [
   },
 ];
 
-const isAuth = AuthStatus.NotAuth;
+const isAuth = AuthStatus.Auth;
 
 function App(props: IAppProps) {
   return (
@@ -63,7 +62,7 @@ function App(props: IAppProps) {
           }
           />
           <Route path={AppRoutes.Login} element={<SignIn />} />
-          <Route path={AppRoutes.MyList} element={<PrivateRouteMyListPage authStatus = {isAuth} element={<MyList/>} />} />
+          <Route path={AppRoutes.MyList} element={<PrivateRouteMyListPage authStatus = {isAuth} />} />
 
           <Route path={AppRoutes.Movie} element={<MoviePage movies={mocksMovies}/>} />
           <Route path={AppRoutes.MovieReviews} element={<MoviePageReviews movies={mocksMovies}/>} />
