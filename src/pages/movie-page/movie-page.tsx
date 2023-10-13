@@ -1,4 +1,26 @@
-function MoviePage() {
+import {useParams} from 'react-router-dom';
+import NotFound404 from '../not-found-404/not-found-404';
+
+interface IMovie {
+  id: string;
+  filmName: string;
+  genre: string;
+  promoDate: number;
+}
+
+interface IMoviePageProps {
+  movies: IMovie[];
+}
+
+
+function MoviePage(props: IMoviePageProps) {
+  const {id} = useParams();
+  const movie = props.movies.find((item)=> item.id === id);
+
+  if(!movie) {
+    return <NotFound404/>;
+  }
+
   return (
     <>
       <section className="film-card film-card--full">
@@ -6,7 +28,7 @@ function MoviePage() {
           <div className="film-card__bg">
             <img
               src="img/bg-the-grand-budapest-hotel.jpg"
-              alt="The Grand Budapest Hotel"
+              alt={movie.filmName}
             />
           </div>
           <h1 className="visually-hidden">WTW</h1>
@@ -36,10 +58,10 @@ function MoviePage() {
           </header>
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">The Grand Budapest Hotel</h2>
+              <h2 className="film-card__title">{movie?.filmName}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">Drama</span>
-                <span className="film-card__year">2014</span>
+                <span className="film-card__genre">{movie?.genre}</span>
+                <span className="film-card__year">{movie?.promoDate}</span>
               </p>
               <div className="film-card__buttons">
                 <button className="btn btn--play film-card__button" type="button">
