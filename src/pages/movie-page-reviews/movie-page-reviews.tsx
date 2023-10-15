@@ -1,5 +1,6 @@
 import {useParams} from 'react-router-dom';
 import NotFound404 from '../not-found-404/not-found-404';
+import { IMocksMovies } from '../../mocks/films';
 
 interface IMovie {
   id: string;
@@ -9,7 +10,7 @@ interface IMovie {
 }
 
 interface IMoviePageReviewsProps {
-  movies: IMovie[];
+  movies: IMocksMovies[];
 }
 
 function MoviePageReviews(props: IMoviePageReviewsProps) {

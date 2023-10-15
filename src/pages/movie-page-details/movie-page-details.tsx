@@ -1,4 +1,8 @@
+import { useParams } from 'react-router-dom';
+
 function MoviePageDetails() {
+  const {id} = useParams();
+
   return (
     <>
       <section className="film-card film-card--full">

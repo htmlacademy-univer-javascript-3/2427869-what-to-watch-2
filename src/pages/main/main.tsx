@@ -1,12 +1,19 @@
-import MovieCard from '../../components/movie-card/movie-card';
+import { useState } from 'react';
+import MovieList from '../../components/movie-list/movie-list';
+import { IMocksMovies } from '../../mocks/films';
+import { AppRoutes } from '../../constants/consts';
+import { Link } from 'react-router-dom';
 
 interface IMainProps {
   filmName: string;
   genre: string;
   promoDate: number;
+  mocksMovies: IMocksMovies[];
 }
 
 function Main(props: IMainProps) {
+  const [activeMovie, setActiveMovie] = useState<string | null>(null);
+
   return (
     <>
       <section className="film-card">
@@ -19,11 +26,11 @@ function Main(props: IMainProps) {
         <h1 className="visually-hidden">WTW</h1>
         <header className="page-header film-card__head">
           <div className="logo">
-            <a className="logo__link">
+            <Link to='/' className="logo__link">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
               <span className="logo__letter logo__letter--3">W</span>
-            </a>
+            </Link>
           </div>
           <ul className="user-block">
             <li className="user-block__item">
@@ -68,7 +75,9 @@ function Main(props: IMainProps) {
                   <svg viewBox="0 0 19 20" width={19} height={20}>
                     <use xlinkHref="#add" />
                   </svg>
-                  <span>My list</span>
+                  <Link to={AppRoutes.MyList}>
+                    <span>My list</span>
+                  </Link>
                   <span className="film-card__count">9</span>
                 </button>
               </div>
@@ -132,7 +141,7 @@ function Main(props: IMainProps) {
             </li>
           </ul>
           <div className="catalog__films-list">
-            {Array.from({ length: 20 }, (_, index) => <MovieCard key={index} />)}
+            <MovieList movies={props.mocksMovies} setActiveMovie={setActiveMovie}/>
           </div>
           <div className="catalog__more">
             <button className="catalog__button" type="button">

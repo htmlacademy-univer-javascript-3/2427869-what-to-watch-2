@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
+import { mocksMovies } from './mocks/films';
 
 const defaultProps = {
   filmName: 'The Grand Budapest Hotel',
@@ -15,6 +16,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App
+      mocksMovies={mocksMovies}
       filmName={defaultProps.filmName}
       genre={defaultProps.genre}
       promoDate={defaultProps.promoDate}
