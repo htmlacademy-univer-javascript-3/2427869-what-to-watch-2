@@ -26,7 +26,7 @@ function Main(props: IMainProps) {
         <h1 className="visually-hidden">WTW</h1>
         <header className="page-header film-card__head">
           <div className="logo">
-            <Link to='/' className="logo__link">
+            <Link to="/" className="logo__link">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
               <span className="logo__letter logo__letter--3">W</span>
@@ -65,13 +65,21 @@ function Main(props: IMainProps) {
                 <span className="film-card__year">{props.promoDate}</span>
               </p>
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button
+                  className="btn btn--play film-card__button"
+                  type="button"
+                >
                   <svg viewBox="0 0 19 19" width={19} height={19}>
                     <use xlinkHref="#play-s" />
                   </svg>
-                  <span>Play</span>
+                  <Link to={'/player/1'}>
+                    <span>Play</span>
+                  </Link>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
+                <button
+                  className="btn btn--list film-card__button"
+                  type="button"
+                >
                   <svg viewBox="0 0 19 20" width={19} height={20}>
                     <use xlinkHref="#add" />
                   </svg>
@@ -141,7 +149,10 @@ function Main(props: IMainProps) {
             </li>
           </ul>
           <div className="catalog__films-list">
-            <MovieList movies={props.mocksMovies} setActiveMovie={setActiveMovie}/>
+            <MovieList
+              movies={props.mocksMovies}
+              setActiveMovie={setActiveMovie}
+            />
           </div>
           <div className="catalog__more">
             <button className="catalog__button" type="button">
@@ -162,7 +173,8 @@ function Main(props: IMainProps) {
           </div>
         </footer>
       </div>
-    </>);
+    </>
+  );
 }
 
 export default Main;
