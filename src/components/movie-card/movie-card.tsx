@@ -27,9 +27,3 @@ function MovieCard(props: IMovieCardProps) {
 }
 
 export default MovieCard;
-
-{/* <Link className="small-film-card__link" to={`/films/${props.movie.id}`}>
-  {props.movie.filmName}
-</Link>
-
-className="small-film-card__link" */}
