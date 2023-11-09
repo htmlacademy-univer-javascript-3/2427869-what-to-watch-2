@@ -1,28 +1,23 @@
 import { useParams } from 'react-router-dom';
 import NotFound404 from '../not-found-404/not-found-404';
-
-interface IPlayer {
-  id: string;
-  filmName: string;
-  duration: string;
-}
+import { IMocksMovies } from '../../mocks/films';
 
 interface IPlayerProps {
-  movies: IPlayer[];
+  movies: IMocksMovies[];
 }
 
 function Player(props: IPlayerProps) {
   const {id} = useParams();
 
-  const player = props.movies.find((item) => item.id === id);
+  const movie = props.movies.find((item) => item.id === id);
 
-  if (!player) {
+  if (!movie) {
     return <NotFound404 />;
   }
 
   return (
     <div className="player">
-      <video src="#" className="player__video" poster="img/player-poster.jpg" />
+      <video src={movie.playerUrl} className="player__video" autoPlay/>
       <button type="button" className="player__exit">
         Exit
       </button>
@@ -34,7 +29,7 @@ function Player(props: IPlayerProps) {
               Toggler
             </div>
           </div>
-          <div className="player__time-value">{player?.duration}</div>
+          <div className="player__time-value">{movie?.duration}</div>
         </div>
         <div className="player__controls-row">
           <button type="button" className="player__play">
