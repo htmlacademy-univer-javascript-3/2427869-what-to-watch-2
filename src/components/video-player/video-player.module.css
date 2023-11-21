@@ -1,0 +1,21 @@
+.container {
+  position: relative;
+  z-index: 100;
+  display: inline-block;
+}
+
+.video {
+  max-width: 100%;
+}
+
+.button {
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+}

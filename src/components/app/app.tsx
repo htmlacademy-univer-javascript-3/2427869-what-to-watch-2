@@ -10,6 +10,7 @@ import PrivateRouteMyListPage from '../private-route-my-list-page/private-route-
 import { mocksMovies, IMocksMovies } from '../../mocks/films';
 import AddReview from '../../pages/add-review/add-review';
 import MoviePageDetails from '../../pages/movie-page-details/movie-page-details';
+import MoviePageOverview from '../../pages/movie-page-overview/movie-page-overview';
 
 interface IAppProps {
   filmName: string;
@@ -42,15 +43,17 @@ function App(props: IAppProps) {
             path={AppRoutes.MyList}
             element={<PrivateRouteMyListPage authStatus={isAuth} />}
           />
-
           <Route
-            path={AppRoutes.Movie}
+            path={`${AppRoutes.Movie}`}
             element={<MoviePage movies={mocksMovies} />}
-          />
-          <Route
-            path={AppRoutes.MovieReviews}
-            element={<MoviePageReviews movies={mocksMovies} />}
-          />
+          >
+            <Route
+              path={AppRoutes.MovieOverview}
+              element={<MoviePageOverview />}
+            />
+            <Route path="details" element={<MoviePageDetails />} />
+            <Route path="review" element={<MoviePageReviews />} />
+          </Route>
           <Route
             path={AppRoutes.Player}
             element={<Player movies={mocksMovies} />}
@@ -59,11 +62,6 @@ function App(props: IAppProps) {
             path={AppRoutes.AddReview}
             element={<AddReview movies={mocksMovies} />}
           />
-          <Route
-            path={AppRoutes.MovieDetails}
-            element={<MoviePageDetails movies={mocksMovies} />}
-          />
-          {/* <Route path={AppRoutes.} */}
           <Route path={AppRoutes.NotFound} element={<NotFound404 />} />
         </Route>
       </Routes>

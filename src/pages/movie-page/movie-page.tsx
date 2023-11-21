@@ -1,7 +1,11 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
 import NotFound404 from '../not-found-404/not-found-404';
 import { IMocksMovies } from '../../mocks/films';
 import { AppRoutes } from '../../constants/consts';
+import MoviePageOverview from '../movie-page-overview/movie-page-overview';
+import MoviePageDetails from '../movie-page-details/movie-page-details';
+import Tabs from '../../components/tabs/tabs';
+import MoviePageReviews from '../movie-page-reviews/movie-page-reviews';
 
 interface IMoviePageProps {
   movies: IMocksMovies[];
@@ -102,63 +106,12 @@ function MoviePage(props: IMoviePageProps) {
               />
             </div>
             <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <Link to={`/films/${movie.id}`} className="film-nav__link">
-                      Overview
-                    </Link>
-                  </li>
-                  <li className="film-nav__item">
-                    <Link
-                      to={`/films/${movie.id}/details`}
-                      className="film-nav__link"
-                    >
-                      Details
-                    </Link>
-                  </li>
-                  <li className="film-nav__item">
-                    <Link
-                      to={`/films/${movie.id}/review`}
-                      className="film-nav__link"
-                    >
-                      Reviews
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-              <div className="film-rating">
-                <div className="film-rating__score">8,9</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">Very good</span>
-                  <span className="film-rating__count">240 ratings</span>
-                </p>
-              </div>
-              <div className="film-card__text">
-                <p>
-                  In the 1930s, the Grand Budapest Hotel is a popular European
-                  ski resort, presided over by concierge Gustave H. (Ralph
-                  Fiennes). Zero, a junior lobby boy, becomes Gustave&aposs
-                  friend and protege.
-                </p>
-                <p>
-                  Gustave prides himself on providing first-class service to the
-                  hotel&aposs guests, including satisfying the sexual needs of
-                  the many elderly women who stay there. When one of
-                  Gustave&aposs lovers dies mysteriously, Gustave finds himself
-                  the recipient of a priceless painting and the chief suspect in
-                  her murder.
-                </p>
-                <p className="film-card__director">
-                  <strong>Director: Wes Anderson</strong>
-                </p>
-                <p className="film-card__starring">
-                  <strong>
-                    Starring: Bill Murray, Edward Norton, Jude Law, Willem Dafoe
-                    and other
-                  </strong>
-                </p>
-              </div>
+              <Tabs />
+              <Routes>
+                <Route path="overview" element={<MoviePageOverview />} />
+                <Route path="details" element={<MoviePageDetails />} />
+                <Route path="review" element={<MoviePageReviews />} />
+              </Routes>
             </div>
           </div>
         </div>
