@@ -6,7 +6,7 @@ import VideoPlayer from '../video-player/video-player';
 
 interface IMovieCardProps {
   movie: IMocksMovies;
-  setActiveMovie: React.Dispatch<React.SetStateAction<string | null>>;
+  setActiveMovie?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 function MovieCard(props: IMovieCardProps) {
@@ -14,8 +14,10 @@ function MovieCard(props: IMovieCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseOver = () => {
-    setIsHovered(true);
-    videoRef.current?.play();
+    setTimeout(() => {
+      setIsHovered(true);
+      videoRef.current?.play();
+    }, 1000);
   };
 
   const handleMouseOut = () => {
@@ -28,11 +30,11 @@ function MovieCard(props: IMovieCardProps) {
       <article
         className={`small-film-card catalog__films-card ${styles.article}`}
         onMouseEnter={() => {
-          props.setActiveMovie(props.movie.id);
+          props.setActiveMovie?.(props.movie.id);
           handleMouseOver();
         }}
         onMouseLeave={() => {
-          props.setActiveMovie(null);
+          props.setActiveMovie?.(null);
           handleMouseOut();
         }}
       >
