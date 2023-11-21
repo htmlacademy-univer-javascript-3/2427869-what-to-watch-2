@@ -6,6 +6,7 @@ import MoviePageOverview from '../movie-page-overview/movie-page-overview';
 import MoviePageDetails from '../movie-page-details/movie-page-details';
 import Tabs from '../../components/tabs/tabs';
 import MoviePageReviews from '../movie-page-reviews/movie-page-reviews';
+import MovieCard from '../../components/movie-card/movie-card';
 
 interface IMoviePageProps {
   movies: IMocksMovies[];
@@ -120,7 +121,7 @@ function MoviePage(props: IMoviePageProps) {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
           <div className="catalog__films-list">
-            <article className="small-film-card catalog__films-card">
+            {/* <article className="small-film-card catalog__films-card">
               <div className="small-film-card__image">
                 <img
                   src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg"
@@ -179,16 +180,19 @@ function MoviePage(props: IMoviePageProps) {
                   Aviator
                 </a>
               </h3>
-            </article>
+            </article> */}
+            {props.movies.slice(0, 4).map((item) => (
+              <MovieCard key={item.id} movie={item} />
+            ))}
           </div>
         </section>
         <footer className="page-footer">
           <div className="logo">
-            <a href="main.html" className="logo__link logo__link--light">
+            <Link to={AppRoutes.Main} className="logo__link logo__link--light">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
               <span className="logo__letter logo__letter--3">W</span>
-            </a>
+            </Link>
           </div>
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>
