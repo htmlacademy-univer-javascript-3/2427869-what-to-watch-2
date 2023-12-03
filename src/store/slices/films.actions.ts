@@ -15,9 +15,13 @@ export const getFimlsByGenreAction = (
   action: PayloadAction<Genres>
 ) => {
   const films = [...state.films];
+  let filteredFilms = [];
 
-  if (action.payload !== Genres.All) {
-    state.films = films.filter((item) => item.genre === action.payload);
+  if (action.payload === Genres.All) {
+    state.films = films.slice(0, state.countFilms);
+  } else {
+    filteredFilms = films.filter((item) => item.genre === action.payload);
+    state.films = filteredFilms.slice(0, state.countFilms);
   }
 };
 
@@ -26,4 +30,12 @@ export const changeFilmsGenreAction = (
   action: PayloadAction<Genres>
 ) => {
   state.currentGenre = action.payload;
+};
+
+export const showMoreFilmsAction = (state: IFilmsSliceInitialState) => {
+  state.countFilms += 8;
+};
+
+export const resetCountFilmsAction = (state: IFilmsSliceInitialState) => {
+  state.countFilms = 8;
 };

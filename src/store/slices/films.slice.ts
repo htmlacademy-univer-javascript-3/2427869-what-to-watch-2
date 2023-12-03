@@ -5,12 +5,14 @@ import {
   setFilmsActionAction,
   getFimlsByGenreAction,
   changeFilmsGenreAction,
+  showMoreFilmsAction,
+  resetCountFilmsAction,
 } from './films.actions';
-import { mocksMovies } from '../../mocks/films';
 
 const initialState: IFilmsSliceInitialState = {
   currentGenre: Genres.All,
   films: [],
+  countFilms: 8,
 };
 
 const filmsSlice = createSlice({
@@ -20,10 +22,17 @@ const filmsSlice = createSlice({
     setFilms: setFilmsActionAction,
     getFimlsByGenre: getFimlsByGenreAction,
     changeFilmsGenre: changeFilmsGenreAction,
+    showMoreFilms: showMoreFilmsAction,
+    resetCountFilms: resetCountFilmsAction,
   },
 });
 
-export const { setFilms, getFimlsByGenre, changeFilmsGenre } =
-  filmsSlice.actions;
+export const {
+  setFilms,
+  getFimlsByGenre,
+  changeFilmsGenre,
+  showMoreFilms,
+  resetCountFilms,
+} = filmsSlice.actions;
 
 export const films = filmsSlice.reducer;

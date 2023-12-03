@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
-import { mocksMovies } from './mocks/films';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
@@ -19,7 +18,6 @@ root.render(
   <Provider store={store}>
     <React.StrictMode>
       <App
-        mocksMovies={mocksMovies}
         filmName={defaultProps.filmName}
         genre={defaultProps.genre}
         promoDate={defaultProps.promoDate}
