@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MovieList from '../../components/movie-list/movie-list';
-import { IMocksMovies } from '../../mocks/films';
-import { AppRoutes } from '../../constants/consts';
+import { IMocksMovies, mocksMovies } from '../../mocks/films';
+import { AppRoutes, Genres } from '../../constants/consts';
 import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getFimlsByGenre, setFilms } from '../../store/slices/films.slice';
+import GenresList from '../../components/genres-list/genres-list';
 
 interface IMainProps {
   filmName: string;
@@ -13,6 +16,17 @@ interface IMainProps {
 
 function Main(props: IMainProps) {
   const [activeMovie, setActiveMovie] = useState<string | null>(null);
+  const [genre, setGenre] = useState<Genres>(Genres.All);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setFilms(mocksMovies));
+  }, [genre]);
+
+  useEffect(() => {
+    dispatch(getFimlsByGenre(genre));
+  }, [genre]);
 
   return (
     <>
@@ -96,58 +110,7 @@ function Main(props: IMainProps) {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="#" className="catalog__genres-link">
-                All genres
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Comedies
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Crime
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Documentary
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Dramas
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Horror
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Kids &amp; Family
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Romance
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Sci-Fi
-              </a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">
-                Thrillers
-              </a>
-            </li>
-          </ul>
+          <GenresList setGenre={setGenre} />
           <div className="catalog__films-list">
             <MovieList
               movies={props.mocksMovies}
