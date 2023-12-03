@@ -4,4 +4,5 @@ import { IMocksMovies } from '../../mocks/films';
 export interface IFilmsSliceInitialState {
   currentGenre: Genres;
   films: IMocksMovies[];
+  countFilms: number;
 }

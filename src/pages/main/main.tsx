@@ -1,32 +1,41 @@
 import { useEffect, useState } from 'react';
 import MovieList from '../../components/movie-list/movie-list';
-import { IMocksMovies, mocksMovies } from '../../mocks/films';
+import { mocksMovies } from '../../mocks/films';
 import { AppRoutes, Genres } from '../../constants/consts';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getFimlsByGenre, setFilms } from '../../store/slices/films.slice';
+import {
+  getFimlsByGenre,
+  resetCountFilms,
+  setFilms,
+} from '../../store/slices/films.slice';
 import GenresList from '../../components/genres-list/genres-list';
+import ShowMore from '../../components/show-more/show-more';
 
 interface IMainProps {
   filmName: string;
   genre: string;
   promoDate: number;
-  mocksMovies: IMocksMovies[];
 }
 
 function Main(props: IMainProps) {
   const [activeMovie, setActiveMovie] = useState<string | null>(null);
   const [genre, setGenre] = useState<Genres>(Genres.All);
+  const countFilms = useAppSelector((state) => state.films.countFilms);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(resetCountFilms());
+  }, []);
+
+  useEffect(() => {
     dispatch(setFilms(mocksMovies));
-  }, [genre]);
+  }, [genre, countFilms]);
 
   useEffect(() => {
     dispatch(getFimlsByGenre(genre));
-  }, [genre]);
+  }, [genre, countFilms]);
 
   return (
     <>
@@ -110,18 +119,11 @@ function Main(props: IMainProps) {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresList setGenre={setGenre} />
+          <GenresList genre={genre} setGenre={setGenre} />
           <div className="catalog__films-list">
-            <MovieList
-              movies={props.mocksMovies}
-              setActiveMovie={setActiveMovie}
-            />
+            <MovieList setActiveMovie={setActiveMovie} />
           </div>
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">
-              Show more
-            </button>
-          </div>
+          {mocksMovies.length > countFilms ? <ShowMore /> : null}
         </section>
         <footer className="page-footer">
           <div className="logo">

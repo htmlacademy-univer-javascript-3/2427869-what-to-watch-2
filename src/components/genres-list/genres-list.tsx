@@ -4,6 +4,7 @@ import { changeFilmsGenre } from '../../store/slices/films.slice';
 import styles from './genres-list.module.css';
 
 interface IGenresListProps {
+  genre: Genres;
   setGenre: (value: Genres) => void;
 }
 
@@ -16,7 +17,11 @@ function GenresList(props: IGenresListProps) {
 
   return (
     <ul className="catalog__genres-list">
-      <li className="catalog__genres-item catalog__genres-item--active">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.All ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -27,7 +32,11 @@ function GenresList(props: IGenresListProps) {
           All genres
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.Comedies ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -38,7 +47,11 @@ function GenresList(props: IGenresListProps) {
           Comedies
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.Crime ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -49,7 +62,13 @@ function GenresList(props: IGenresListProps) {
           Crime
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.Documentary
+            ? 'catalog__genres-item--active'
+            : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -60,7 +79,11 @@ function GenresList(props: IGenresListProps) {
           Documentary
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.Dramas ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -71,7 +94,11 @@ function GenresList(props: IGenresListProps) {
           Dramas
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.Horror ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -82,7 +109,13 @@ function GenresList(props: IGenresListProps) {
           Horror
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.KidsAndFamily
+            ? 'catalog__genres-item--active'
+            : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -93,7 +126,11 @@ function GenresList(props: IGenresListProps) {
           Kids & Family
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.Romance ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -104,7 +141,11 @@ function GenresList(props: IGenresListProps) {
           Romance
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.SciFi ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
@@ -115,7 +156,11 @@ function GenresList(props: IGenresListProps) {
           Sci-Fi
         </button>
       </li>
-      <li className="catalog__genres-item">
+      <li
+        className={`catalog__genres-item ${
+          props.genre === Genres.Thrillers ? 'catalog__genres-item--active' : ''
+        }`}
+      >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
