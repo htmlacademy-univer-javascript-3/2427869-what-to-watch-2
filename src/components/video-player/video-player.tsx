@@ -3,9 +3,10 @@ import styles from './video-player.module.css';
 
 interface IVideoPlayerProps {
   src: string;
+  srcImage: string;
 }
 
-function VideoPlayer({ src }: IVideoPlayerProps) {
+function VideoPlayer({ src, srcImage }: IVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
 
@@ -33,7 +34,7 @@ function VideoPlayer({ src }: IVideoPlayerProps) {
         src={src}
         muted={muted}
         className={styles.video}
-        poster="img/fantastic-beasts-the-crimes-of-grindelwald.jpg"
+        poster={srcImage}
       />
       <button onClick={handleMute} className={styles.button}>
         <svg

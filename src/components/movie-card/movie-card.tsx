@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { IMocksMovies } from '../../mocks/films';
 import styles from './movie-card.module.css';
 import { useRef, useState } from 'react';
 import VideoPlayer from '../video-player/video-player';
+import { IMovies } from '../../types/types';
 
 interface IMovieCardProps {
-  movie: IMocksMovies;
+  movie: IMovies;
   setActiveMovie?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
@@ -40,17 +40,20 @@ function MovieCard(props: IMovieCardProps) {
       >
         <div className="small-film-card__image">
           {isHovered ? (
-            <VideoPlayer src={props.movie.playerUrl} />
+            <VideoPlayer
+              src={props.movie.previewVideoLink}
+              srcImage={props.movie.previewImage}
+            />
           ) : (
             <img
-              src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg"
-              alt="Fantastic Beasts: The Crimes of Grindelwald"
+              src={props.movie.previewImage}
+              alt={props.movie.name}
               width={280}
               height={175}
             />
           )}
         </div>
-        <h3 className="small-film-card__title">{props.movie.filmName}</h3>
+        <h3 className="small-film-card__title">{props.movie.name}</h3>
       </article>
     </Link>
   );
