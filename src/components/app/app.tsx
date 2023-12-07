@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from '../../pages/main/main';
-import SignIn from '../../pages/sign-in/sign-in';
 import NotFound404 from '../../pages/not-found-404/not-found-404';
 import MoviePage from '../../pages/movie-page/movie-page';
 import MoviePageReviews from '../../pages/movie-page-reviews/movie-page-reviews';
@@ -14,16 +13,11 @@ import MoviePageOverview from '../../pages/movie-page-overview/movie-page-overvi
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { fetchMovies } from '../../store/slices/fimls.thunks';
-
-interface IAppProps {
-  filmName: string;
-  genre: string;
-  promoDate: number;
-}
+import PrivateRouteLogin from '../private-route-login/private-route-login';
 
 const isAuth = AuthStatus.NotAuth;
 
-function App(props: IAppProps) {
+function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,17 +28,8 @@ function App(props: IAppProps) {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoutes.Main}>
-          <Route
-            index
-            element={
-              <Main
-                filmName={props.filmName}
-                genre={props.genre}
-                promoDate={props.promoDate}
-              />
-            }
-          />
-          <Route path={AppRoutes.Login} element={<SignIn />} />
+          <Route index element={<Main />} />
+          <Route path={AppRoutes.Login} element={<PrivateRouteLogin />} />
           <Route
             path={AppRoutes.MyList}
             element={<PrivateRouteMyListPage authStatus={isAuth} />}
@@ -60,10 +45,7 @@ function App(props: IAppProps) {
             <Route path="details" element={<MoviePageDetails />} />
             <Route path="review" element={<MoviePageReviews />} />
           </Route>
-          <Route
-            path={AppRoutes.Player}
-            element={<Player movies={mocksMovies} />}
-          />
+          <Route path={AppRoutes.Player} element={<Player />} />
           <Route
             path={AppRoutes.AddReview}
             element={<AddReview movies={mocksMovies} />}

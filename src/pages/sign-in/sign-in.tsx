@@ -1,18 +1,57 @@
+import {
+  ChangeEvent,
+  FormEvent,
+  FormEventHandler,
+  useEffect,
+  useState,
+} from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../store/slices/fimls.thunks';
+import { AppRoutes } from '../../constants/consts';
+
 function SignIn() {
+  const dispatch = useAppDispatch();
+  const [inputEmailValue, setInputEmailValue] = useState<string>('');
+  const [inputPasswordValue, setInputPasswordValue] = useState<string>('');
+  const errorMessage = useAppSelector((state) => state.films.loginError);
+  const token = useAppSelector((state) => state.films.profile?.token);
+  const navigate = useNavigate();
+
+  const onInputEmailChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setInputEmailValue(evt.target.value);
+  };
+
+  const onInputPasswordChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setInputPasswordValue(evt.target.value);
+  };
+
+  useEffect(() => {
+    if (token) {
+      navigate(AppRoutes.Main);
+    }
+  }, [token]);
+
+  const onSubmitButton = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    dispatch(login(inputEmailValue, inputPasswordValue));
+  };
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
         <div className="logo">
-          <a href="main.html" className="logo__link">
+          <Link to={AppRoutes.Main} className="logo__link">
             <span className="logo__letter logo__letter--1">W</span>
             <span className="logo__letter logo__letter--2">T</span>
             <span className="logo__letter logo__letter--3">W</span>
-          </a>
+          </Link>
         </div>
         <h1 className="page-title user-page__title">Sign in</h1>
       </header>
       <div className="sign-in user-page__content">
-        <form action="#" className="sign-in__form">
+        <form action="#" className="sign-in__form" onSubmit={onSubmitButton}>
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input
@@ -21,6 +60,7 @@ function SignIn() {
                 placeholder="Email address"
                 name="user-email"
                 id="user-email"
+                onChange={onInputEmailChange}
               />
               <label
                 className="sign-in__label visually-hidden"
@@ -36,6 +76,7 @@ function SignIn() {
                 placeholder="Password"
                 name="user-password"
                 id="user-password"
+                onChange={onInputPasswordChange}
               />
               <label
                 className="sign-in__label visually-hidden"
@@ -45,6 +86,7 @@ function SignIn() {
               </label>
             </div>
           </div>
+          <div>{errorMessage}</div>
           <div className="sign-in__submit">
             <button className="sign-in__btn" type="submit">
               Sign in
@@ -64,7 +106,8 @@ function SignIn() {
           <p>© 2019 What to watch Ltd.</p>
         </div>
       </footer>
-    </div>);
+    </div>
+  );
 }
 
 export default SignIn;

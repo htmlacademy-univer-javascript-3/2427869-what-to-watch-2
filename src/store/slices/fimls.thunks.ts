@@ -1,13 +1,15 @@
 import { AxiosResponse } from 'axios';
 import { createAxiosInstance } from '../../api/api';
 import { baseURL } from '../../constants/consts';
-import { IMovie, IMovies } from '../../types/types';
+import { IMovie, IMovies, IProfile, IPromoMovie } from '../../types/types';
 import { TAppDispatch } from '../index.types';
 import {
   setError,
   setFilms,
   setLoader,
-  setMovie,
+  setLoginError,
+  setProfileData,
+  setPromoMovie,
   unsetLoader,
 } from './films.slice';
 
@@ -37,10 +39,51 @@ export const fetchMovie = (id: string) => async (dispatch: TAppDispatch) => {
 
     const movie: IMovie = data.data;
 
-    dispatch(setMovie(movie));
+    dispatch(setPromoMovie(movie));
   } catch (error) {
     dispatch(setError());
   } finally {
     dispatch(unsetLoader());
   }
 };
+
+export const fetchPromoMovie = () => async (dispatch: TAppDispatch) => {
+  try {
+    dispatch(setLoader());
+
+    const data: AxiosResponse<IPromoMovie> = await createAxiosInstance(
+      baseURL
+    ).get('/promo');
+
+    const movie: IPromoMovie = data.data;
+
+    dispatch(setPromoMovie(movie));
+  } catch (error) {
+    dispatch(setError());
+  } finally {
+    dispatch(unsetLoader());
+  }
+};
+
+export const login =
+  (email: string, password: string) => async (dispatch: TAppDispatch) => {
+    try {
+      dispatch(setLoader());
+
+      const data: AxiosResponse<IProfile> = await createAxiosInstance(
+        baseURL
+      ).post('/login', {
+        email,
+        password,
+      });
+
+      const profileData: IProfile = data.data;
+      localStorage.setItem('token', profileData.token);
+
+      dispatch(setProfileData(profileData));
+    } catch (error) {
+      dispatch(setLoginError());
+    } finally {
+      dispatch(unsetLoader());
+    }
+  };
