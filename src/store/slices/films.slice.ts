@@ -12,6 +12,10 @@ import {
   setErrorAction,
   unsetErrorAction,
   setMovieAction,
+  setPromoMovieAction,
+  setProfileDataAction,
+  setLoginErrorAction,
+  unsetLoginErrorAction,
 } from './films.actions';
 
 const initialState: IFilmsSliceInitialState = {
@@ -38,9 +42,13 @@ const initialState: IFilmsSliceInitialState = {
     released: 2018,
     isFavorite: false,
   },
+  profile: null,
   countFilms: 8,
   isLoading: false,
   error: null,
+  loginError: null,
+  authorizationStatus: false,
+  promoMovie: null,
 };
 
 const filmsSlice = createSlice({
@@ -51,8 +59,12 @@ const filmsSlice = createSlice({
     unsetLoader: unsetLoaderAction,
     setError: setErrorAction,
     unsetError: unsetErrorAction,
+    setLoginError: setLoginErrorAction,
+    unsetLoginError: unsetLoginErrorAction,
     setFilms: setFilmsActionAction,
     setMovie: setMovieAction,
+    setPromoMovie: setPromoMovieAction,
+    setProfileData: setProfileDataAction,
     getFimlsByGenre: getFimlsByGenreAction,
     changeFilmsGenre: changeFilmsGenreAction,
     showMoreFilms: showMoreFilmsAction,
@@ -65,8 +77,11 @@ export const {
   unsetLoader,
   setError,
   unsetError,
+  setLoginError,
   setFilms,
   setMovie,
+  setPromoMovie,
+  setProfileData,
   getFimlsByGenre,
   changeFilmsGenre,
   showMoreFilms,

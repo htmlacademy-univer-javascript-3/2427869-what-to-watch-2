@@ -1,13 +1,7 @@
 import NotFound404 from '../not-found-404/not-found-404';
-import { IMocksMovies } from '../../mocks/films';
 import { useAppSelector } from '../../store/hooks';
 
-interface IPlayerProps {
-  movies: IMocksMovies[];
-}
-
-function Player(props: IPlayerProps) {
-  // const movie = props.movies.find((item) => item.id === id);
+function Player() {
   const movie = useAppSelector((state) => state.films.film);
 
   if (!movie) {

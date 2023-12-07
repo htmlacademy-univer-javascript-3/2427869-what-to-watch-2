@@ -1,14 +1,13 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { IFilmsSliceInitialState } from './films.types';
 import { Genres } from '../../constants/consts';
-import { IMovie, IMovies } from '../../types/types';
-
-// export const setFilmsActionAction = (
-//   state: IFilmsSliceInitialState,
-//   action: PayloadAction<IMovies[]>
-// ) => {
-//   state.films = action.payload;
-// };
+import {
+  ILoginErrorResponse,
+  IMovie,
+  IMovies,
+  IProfile,
+  IPromoMovie,
+} from '../../types/types';
 
 export const getFimlsByGenreAction = (
   state: IFilmsSliceInitialState,
@@ -26,13 +25,12 @@ export const getFimlsByGenreAction = (
   }
 };
 
-// Ваше действие для установки фильмов
 export const setFilmsActionAction = (
   state: IFilmsSliceInitialState,
   action: PayloadAction<IMovies[]>
 ) => {
-  state.allFilms = action.payload; // сохраните все фильмы здесь
-  state.films = action.payload.slice(0, state.countFilms); // сохраните только первые 8 фильмов здесь
+  state.allFilms = action.payload;
+  state.films = action.payload.slice(0, state.countFilms);
 };
 
 export const changeFilmsGenreAction = (
@@ -47,6 +45,20 @@ export const setMovieAction = (
   action: PayloadAction<IMovie>
 ) => {
   state.film = action.payload;
+};
+
+export const setPromoMovieAction = (
+  state: IFilmsSliceInitialState,
+  action: PayloadAction<IPromoMovie>
+) => {
+  state.promoMovie = action.payload;
+};
+
+export const setProfileDataAction = (
+  state: IFilmsSliceInitialState,
+  action: PayloadAction<IProfile>
+) => {
+  state.profile = action.payload;
 };
 
 export const showMoreFilmsAction = (state: IFilmsSliceInitialState) => {
@@ -71,4 +83,20 @@ export const setErrorAction = (state: IFilmsSliceInitialState) => {
 
 export const unsetErrorAction = (state: IFilmsSliceInitialState) => {
   state.error = null;
+};
+
+export const setLoginErrorAction = (state: IFilmsSliceInitialState) => {
+  state.loginError = 'Uncorrect login or password';
+};
+
+export const unsetLoginErrorAction = (state: IFilmsSliceInitialState) => {
+  state.loginError = null;
+};
+
+export const successLoginAction = (state: IFilmsSliceInitialState) => {
+  state.authorizationStatus = true;
+};
+
+export const signOutAction = (state: IFilmsSliceInitialState) => {
+  state.authorizationStatus = false;
 };

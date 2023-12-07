@@ -23,3 +23,33 @@ export interface IMovie {
   released: number;
   isFavorite: boolean;
 }
+
+export interface IPromoMovie {
+  id: string;
+  name: string;
+  posterImage: string;
+  backgroundImage: string;
+  videoLink: string;
+  genre: string;
+  released: number;
+  isFavorite: boolean;
+}
+
+export interface IProfile {
+  name: string;
+  avatarUrl: string;
+  email: string;
+  token: string;
+}
+
+export interface IDetail {
+  property: string;
+  value: string;
+  messages: string[];
+}
+
+export interface ILoginErrorResponse {
+  errorType: string;
+  message: string;
+  details: IDetail[];
+}
