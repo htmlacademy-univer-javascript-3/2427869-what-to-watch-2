@@ -18,7 +18,7 @@ export enum AuthStatus {
 
 export enum Genres {
   All = 'All genres',
-  Comedies = 'Comedies',
+  Comedies = 'Comedy',
   Crime = 'Crime',
   Documentary = 'Documentary',
   Dramas = 'Dramas',
@@ -28,3 +28,5 @@ export enum Genres {
   SciFi = 'Sci-Fi',
   Thrillers = 'Thrillers',
 }
+
+export const baseURL = 'https://13.design.pages.academy/wtw';

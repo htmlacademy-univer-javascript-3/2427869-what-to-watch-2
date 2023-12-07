@@ -11,6 +11,9 @@ import { mocksMovies } from '../../mocks/films';
 import AddReview from '../../pages/add-review/add-review';
 import MoviePageDetails from '../../pages/movie-page-details/movie-page-details';
 import MoviePageOverview from '../../pages/movie-page-overview/movie-page-overview';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { fetchMovies } from '../../store/slices/fimls.thunks';
 
 interface IAppProps {
   filmName: string;
@@ -20,8 +23,13 @@ interface IAppProps {
 
 const isAuth = AuthStatus.NotAuth;
 
-//TODO: сделать линку для овервью на мовипэйдж
 function App(props: IAppProps) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMovies());
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

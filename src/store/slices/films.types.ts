@@ -1,8 +1,12 @@
 import { Genres } from '../../constants/consts';
-import { IMocksMovies } from '../../mocks/films';
+import { IMovie, IMovies } from '../../types/types';
 
 export interface IFilmsSliceInitialState {
   currentGenre: Genres;
-  films: IMocksMovies[];
+  allFilms: IMovies[];
+  films: IMovies[];
+  film: IMovie;
   countFilms: number;
+  isLoading: boolean;
+  error: string | null;
 }

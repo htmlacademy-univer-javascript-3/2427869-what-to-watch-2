@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import MovieList from '../../components/movie-list/movie-list';
-import { mocksMovies } from '../../mocks/films';
 import { AppRoutes, Genres } from '../../constants/consts';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   getFimlsByGenre,
   resetCountFilms,
-  setFilms,
 } from '../../store/slices/films.slice';
 import GenresList from '../../components/genres-list/genres-list';
 import ShowMore from '../../components/show-more/show-more';
+import Loader from '../../components/loader/loader';
 
 interface IMainProps {
   filmName: string;
@@ -22,16 +21,15 @@ function Main(props: IMainProps) {
   const [activeMovie, setActiveMovie] = useState<string | null>(null);
   const [genre, setGenre] = useState<Genres>(Genres.All);
   const countFilms = useAppSelector((state) => state.films.countFilms);
+  const isLoading = useAppSelector((state) => state.films.isLoading);
+  const error = useAppSelector((state) => state.films.error);
+  const { films, filmsByGenre } = useAppSelector((state) => state.films);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(resetCountFilms());
   }, []);
-
-  useEffect(() => {
-    dispatch(setFilms(mocksMovies));
-  }, [genre, countFilms]);
 
   useEffect(() => {
     dispatch(getFimlsByGenre(genre));
@@ -121,9 +119,15 @@ function Main(props: IMainProps) {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <GenresList genre={genre} setGenre={setGenre} />
           <div className="catalog__films-list">
-            <MovieList setActiveMovie={setActiveMovie} />
+            {isLoading ? (
+              <Loader />
+            ) : error ? (
+              <p>{error}</p>
+            ) : (
+              <MovieList setActiveMovie={setActiveMovie} />
+            )}
           </div>
-          {mocksMovies.length > countFilms ? <ShowMore /> : null}
+          <ShowMore />
         </section>
         <footer className="page-footer">
           <div className="logo">

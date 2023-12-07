@@ -7,6 +7,10 @@ import MoviePageDetails from '../movie-page-details/movie-page-details';
 import Tabs from '../../components/tabs/tabs';
 import MoviePageReviews from '../movie-page-reviews/movie-page-reviews';
 import MovieCard from '../../components/movie-card/movie-card';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchMovie } from '../../store/slices/fimls.thunks';
+import Loader from '../../components/loader/loader';
 
 interface IMoviePageProps {
   movies: IMocksMovies[];
@@ -14,7 +18,16 @@ interface IMoviePageProps {
 
 function MoviePage(props: IMoviePageProps) {
   const { id } = useParams();
-  const movie = props.movies.find((item) => item.id === id);
+  const dispatch = useAppDispatch();
+  const movie = useAppSelector((state) => state.films.film);
+  const movies = useAppSelector((state) => state.films.films);
+  const isLoading = useAppSelector((state) => state.films.isLoading);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchMovie(id));
+    }
+  }, []);
 
   if (!movie) {
     return <NotFound404 />;
@@ -25,10 +38,7 @@ function MoviePage(props: IMoviePageProps) {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img
-              src="img/bg-the-grand-budapest-hotel.jpg"
-              alt={movie.filmName}
-            />
+            <img src="img/bg-the-grand-budapest-hotel.jpg" alt={movie.name} />
           </div>
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header film-card__head">
@@ -57,10 +67,10 @@ function MoviePage(props: IMoviePageProps) {
           </header>
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{movie?.filmName}</h2>
+              <h2 className="film-card__title">{movie.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{movie?.genre}</span>
-                <span className="film-card__year">{movie?.promoDate}</span>
+                <span className="film-card__genre">{movie.genre}</span>
+                <span className="film-card__year">{movie.released}</span>
               </p>
               <div className="film-card__buttons">
                 <button
@@ -100,19 +110,23 @@ function MoviePage(props: IMoviePageProps) {
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
               <img
-                src="img/the-grand-budapest-hotel-poster.jpg"
-                alt="The Grand Budapest Hotel poster"
+                src={movie.posterImage}
+                alt={movie.name}
                 width={218}
                 height={327}
               />
             </div>
             <div className="film-card__desc">
               <Tabs />
-              <Routes>
-                <Route path="overview" element={<MoviePageOverview />} />
-                <Route path="details" element={<MoviePageDetails />} />
-                <Route path="review" element={<MoviePageReviews />} />
-              </Routes>
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <Routes>
+                  <Route path="overview" element={<MoviePageOverview />} />
+                  <Route path="details" element={<MoviePageDetails />} />
+                  <Route path="review" element={<MoviePageReviews />} />
+                </Routes>
+              )}
             </div>
           </div>
         </div>
@@ -121,69 +135,13 @@ function MoviePage(props: IMoviePageProps) {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
           <div className="catalog__films-list">
-            {/* <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img
-                  src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg"
-                  alt="Fantastic Beasts: The Crimes of Grindelwald"
-                  width={280}
-                  height={175}
-                />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">
-                  Fantastic Beasts: The Crimes of Grindelwald
-                </a>
-              </h3>
-            </article>
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img
-                  src="img/bohemian-rhapsody.jpg"
-                  alt="Bohemian Rhapsody"
-                  width={280}
-                  height={175}
-                />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">
-                  Bohemian Rhapsody
-                </a>
-              </h3>
-            </article>
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img
-                  src="img/macbeth.jpg"
-                  alt="Macbeth"
-                  width={280}
-                  height={175}
-                />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">
-                  Macbeth
-                </a>
-              </h3>
-            </article>
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img
-                  src="img/aviator.jpg"
-                  alt="Aviator"
-                  width={280}
-                  height={175}
-                />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">
-                  Aviator
-                </a>
-              </h3>
-            </article> */}
-            {props.movies.slice(0, 4).map((item) => (
-              <MovieCard key={item.id} movie={item} />
-            ))}
+            {movies.map((item) => {
+              if (item.genre === movie.genre && item.name !== movie.name) {
+                return <MovieCard key={item.id} movie={item} />;
+              }
+
+              return null;
+            })}
           </div>
         </section>
         <footer className="page-footer">
