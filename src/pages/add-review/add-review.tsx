@@ -1,78 +1,35 @@
 import { useParams } from 'react-router-dom';
-import { IMocksMovies } from '../../mocks/films';
-import NotFound404 from '../not-found-404/not-found-404';
 import FormSendComment from '../../components/form-send-comment/form-send-comment';
+import Header from '../../components/header/header';
+import { useAppSelector } from '../../store/hooks';
 
-interface IAddReviewProps {
-  movies: IMocksMovies[];
-}
-
-function AddReview(props: IAddReviewProps) {
+function AddReview() {
   const { id } = useParams();
-  const movie = props.movies.find((item) => id === item.id);
-  if (!movie) {
-    return <NotFound404 />;
-  }
+  const movie = useAppSelector((state) => state.films.film);
 
   return (
-    <section className="film-card film-card--full">
-      <div className="film-card__header">
-        <div className="film-card__bg">
-          <img
-            src="img/bg-the-grand-budapest-hotel.jpg"
-            alt="The Grand Budapest Hotel"
-          />
-        </div>
-        <h1 className="visually-hidden">WTW</h1>
-        <header className="page-header">
-          <div className="logo">
-            <a href="main.html" className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
+    id && (
+      <section className="film-card film-card--full">
+        <div className="film-card__header">
+          <div className="film-card__bg">
+            <img src={movie.backgroundImage} alt={movie.name} />
           </div>
-          <nav className="breadcrumbs">
-            <ul className="breadcrumbs__list">
-              <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">
-                  {movie?.filmName}
-                </a>
-              </li>
-              <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link">Add review</a>
-              </li>
-            </ul>
-          </nav>
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img
-                  src="img/avatar.jpg"
-                  alt="User avatar"
-                  width={63}
-                  height={63}
-                />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
-        </header>
-        <div className="film-card__poster film-card__poster--small">
-          <img
-            src="img/the-grand-budapest-hotel-poster.jpg"
-            alt="The Grand Budapest Hotel poster"
-            width={218}
-            height={327}
-          />
+          <h1 className="visually-hidden">WTW</h1>
+          <Header />
+          <div className="film-card__poster film-card__poster--small">
+            <img
+              src={movie.posterImage}
+              alt={movie.name}
+              width={218}
+              height={327}
+            />
+          </div>
         </div>
-      </div>
-      <div className="add-review">
-        <FormSendComment />
-      </div>
-    </section>
+        <div className="add-review">
+          <FormSendComment id={id} />
+        </div>
+      </section>
+    )
   );
 }
 

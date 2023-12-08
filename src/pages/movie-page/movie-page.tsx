@@ -1,6 +1,5 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import NotFound404 from '../not-found-404/not-found-404';
-import { IMocksMovies } from '../../mocks/films';
 import { AppRoutes } from '../../constants/consts';
 import MoviePageOverview from '../movie-page-overview/movie-page-overview';
 import MoviePageDetails from '../movie-page-details/movie-page-details';
@@ -12,16 +11,12 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchMovie } from '../../store/slices/fimls.thunks';
 import Loader from '../../components/loader/loader';
 
-interface IMoviePageProps {
-  movies: IMocksMovies[];
-}
-
-function MoviePage(props: IMoviePageProps) {
+function MoviePage() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const movie = useAppSelector((state) => state.films.film);
   const movies = useAppSelector((state) => state.films.films);
-  const isLoading = useAppSelector((state) => state.films.isLoading);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (id) {
@@ -96,12 +91,14 @@ function MoviePage(props: IMoviePageProps) {
                   </Link>
                   <span className="film-card__count">9</span>
                 </button>
-                <Link
-                  to={`/films/${movie.id}/addreview`}
-                  className="btn film-card__button"
-                >
-                  Add review
-                </Link>
+                {token ? (
+                  <Link
+                    to={`/films/${movie.id}/addreview`}
+                    className="btn film-card__button"
+                  >
+                    Add review
+                  </Link>
+                ) : null}
               </div>
             </div>
           </div>
@@ -118,15 +115,16 @@ function MoviePage(props: IMoviePageProps) {
             </div>
             <div className="film-card__desc">
               <Tabs />
-              {isLoading ? (
+              {/* {isLoading ? (
                 <Loader />
               ) : (
-                <Routes>
-                  <Route path="overview" element={<MoviePageOverview />} />
-                  <Route path="details" element={<MoviePageDetails />} />
-                  <Route path="review" element={<MoviePageReviews />} />
-                </Routes>
-              )}
+
+              )} */}
+              <Routes>
+                <Route path="overview" element={<MoviePageOverview />} />
+                <Route path="details" element={<MoviePageDetails />} />
+                <Route path="review" element={<MoviePageReviews />} />
+              </Routes>
             </div>
           </div>
         </div>

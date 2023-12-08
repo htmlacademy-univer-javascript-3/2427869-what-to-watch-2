@@ -2,13 +2,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from '../../pages/main/main';
 import NotFound404 from '../../pages/not-found-404/not-found-404';
 import MoviePage from '../../pages/movie-page/movie-page';
-import MoviePageReviews from '../../pages/movie-page-reviews/movie-page-reviews';
 import Player from '../../pages/player/player';
 import { AppRoutes, AuthStatus } from '../../constants/consts';
 import PrivateRouteMyListPage from '../private-route-my-list-page/private-route-my-list-page';
-import { mocksMovies } from '../../mocks/films';
 import AddReview from '../../pages/add-review/add-review';
-import MoviePageDetails from '../../pages/movie-page-details/movie-page-details';
 import MoviePageOverview from '../../pages/movie-page-overview/movie-page-overview';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../store/hooks';
@@ -34,22 +31,14 @@ function App() {
             path={AppRoutes.MyList}
             element={<PrivateRouteMyListPage authStatus={isAuth} />}
           />
-          <Route
-            path={`${AppRoutes.Movie}`}
-            element={<MoviePage movies={mocksMovies} />}
-          >
+          <Route path={`${AppRoutes.Movie}`} element={<MoviePage />}>
             <Route
               path={AppRoutes.MovieOverview}
               element={<MoviePageOverview />}
             />
-            <Route path="details" element={<MoviePageDetails />} />
-            <Route path="review" element={<MoviePageReviews />} />
           </Route>
           <Route path={AppRoutes.Player} element={<Player />} />
-          <Route
-            path={AppRoutes.AddReview}
-            element={<AddReview movies={mocksMovies} />}
-          />
+          <Route path="/films/:id/addreview" element={<AddReview />} />
           <Route path={AppRoutes.NotFound} element={<NotFound404 />} />
         </Route>
       </Routes>

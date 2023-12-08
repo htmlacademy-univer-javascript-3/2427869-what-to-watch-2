@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { AppRoutes } from '../../constants/consts';
+import { signOut } from '../../store/slices/fimls.thunks';
 
 function Header() {
   const authStatus = useAppSelector((state) => state.films.authorizationStatus);
   const token = localStorage.getItem('token');
+  const dispatch = useAppDispatch();
+
+  const onSignOutLinkClick = () => {
+    if (token) {
+      dispatch(signOut(token));
+    }
+  };
 
   return (
     <header className="page-header film-card__head">
@@ -34,7 +42,11 @@ function Header() {
               Login
             </Link>
           ) : (
-            <Link to={AppRoutes.Main} className="user-block__link">
+            <Link
+              to={AppRoutes.Main}
+              className="user-block__link"
+              onClick={onSignOutLinkClick}
+            >
               Sign out
             </Link>
           )}
