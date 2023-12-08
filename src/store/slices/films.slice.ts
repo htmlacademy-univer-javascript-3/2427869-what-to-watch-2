@@ -16,6 +16,7 @@ import {
   setProfileDataAction,
   setLoginErrorAction,
   unsetLoginErrorAction,
+  setCommentsDataAction,
 } from './films.actions';
 
 const initialState: IFilmsSliceInitialState = {
@@ -42,6 +43,7 @@ const initialState: IFilmsSliceInitialState = {
     released: 2018,
     isFavorite: false,
   },
+  comments: [],
   profile: null,
   countFilms: 8,
   isLoading: false,
@@ -65,6 +67,7 @@ const filmsSlice = createSlice({
     setMovie: setMovieAction,
     setPromoMovie: setPromoMovieAction,
     setProfileData: setProfileDataAction,
+    setCommentsData: setCommentsDataAction,
     getFimlsByGenre: getFimlsByGenreAction,
     changeFilmsGenre: changeFilmsGenreAction,
     showMoreFilms: showMoreFilmsAction,
@@ -82,6 +85,7 @@ export const {
   setMovie,
   setPromoMovie,
   setProfileData,
+  setCommentsData,
   getFimlsByGenre,
   changeFilmsGenre,
   showMoreFilms,

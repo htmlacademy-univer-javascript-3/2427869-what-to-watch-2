@@ -2,11 +2,11 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { IFilmsSliceInitialState } from './films.types';
 import { Genres } from '../../constants/consts';
 import {
-  ILoginErrorResponse,
   IMovie,
   IMovies,
   IProfile,
   IPromoMovie,
+  IReview,
 } from '../../types/types';
 
 export const getFimlsByGenreAction = (
@@ -59,6 +59,13 @@ export const setProfileDataAction = (
   action: PayloadAction<IProfile>
 ) => {
   state.profile = action.payload;
+};
+
+export const setCommentsDataAction = (
+  state: IFilmsSliceInitialState,
+  action: PayloadAction<IReview[]>
+) => {
+  state.comments = action.payload;
 };
 
 export const showMoreFilmsAction = (state: IFilmsSliceInitialState) => {
