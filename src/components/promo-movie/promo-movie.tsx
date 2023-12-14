@@ -7,6 +7,7 @@ import { fetchPromoMovie } from '../../store/slices/fimls.thunks';
 function PromoMovie() {
   const dispatch = useAppDispatch();
   const promoMovie = useAppSelector((state) => state.films.promoMovie);
+  const myListMovies = useAppSelector((state) => state.films.myListMovies);
 
   useEffect(() => {
     dispatch(fetchPromoMovie());
@@ -34,7 +35,7 @@ function PromoMovie() {
               <svg viewBox="0 0 19 19" width={19} height={19}>
                 <use xlinkHref="#play-s" />
               </svg>
-              <Link to={'/player/1'}>
+              <Link to={`/player/${promoMovie?.id as string}`}>
                 <span>Play</span>
               </Link>
             </button>
@@ -45,7 +46,7 @@ function PromoMovie() {
               <Link to={AppRoutes.MyList}>
                 <span>My list</span>
               </Link>
-              <span className="film-card__count">9</span>
+              <span className="film-card__count">{myListMovies.length}</span>
             </button>
           </div>
         </div>

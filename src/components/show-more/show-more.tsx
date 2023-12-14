@@ -11,7 +11,7 @@ function ShowMore() {
   };
 
   if (countFilms >= allFilms.length) {
-    return null; // Возвращает null, если больше нет фильмов для отображения
+    return null;
   }
 
   return (

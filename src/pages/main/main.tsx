@@ -14,6 +14,7 @@ import Header from '../../components/header/header';
 
 function Main() {
   const [activeMovie, setActiveMovie] = useState<string | null>(null);
+  const movies = useAppSelector((state) => state.films.films);
   const [genre, setGenre] = useState<Genres>(Genres.All);
   const countFilms = useAppSelector((state) => state.films.countFilms);
   const isLoading = useAppSelector((state) => state.films.isLoading);
@@ -53,7 +54,7 @@ function Main() {
             ) : error ? (
               <p>{error}</p>
             ) : (
-              <MovieList setActiveMovie={setActiveMovie} />
+              <MovieList setActiveMovie={setActiveMovie} movies={movies} />
             )}
             {/* eslint-enable */}
           </div>

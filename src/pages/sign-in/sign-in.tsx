@@ -1,67 +1,84 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  FormEventHandler,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../../store/slices/fimls.thunks';
 import { AppRoutes } from '../../constants/consts';
+import { validationSchema } from '../../pages/sign-in/sign-in.schema';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import Header from '../../components/header/header';
+
+interface IDefaultFormValues {
+  email: string;
+  password: string;
+}
 
 function SignIn() {
   const dispatch = useAppDispatch();
-  const [inputEmailValue, setInputEmailValue] = useState<string>('');
-  const [inputPasswordValue, setInputPasswordValue] = useState<string>('');
   const errorMessage = useAppSelector((state) => state.films.loginError);
   const token = useAppSelector((state) => state.films.profile?.token);
+  const authStatus = useAppSelector((state) => state.films.authorizationStatus);
   const navigate = useNavigate();
 
+  const defaultValues: IDefaultFormValues = {
+    email: '',
+    password: '',
+  };
+
+  /* eslint-disable */
+  const { handleSubmit, control, setValue } = useForm<IDefaultFormValues>({
+    defaultValues: defaultValues,
+    resolver: yupResolver(validationSchema),
+  });
+
   const onInputEmailChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setInputEmailValue(evt.target.value);
+    setValue('email', evt.target.value);
   };
 
   const onInputPasswordChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setInputPasswordValue(evt.target.value);
+    setValue('password', evt.target.value);
   };
 
   useEffect(() => {
-    if (token) {
+    if (authStatus) {
       navigate(AppRoutes.Main);
     }
-  }, [token]);
+  }, [authStatus]);
 
-  const onSubmitButton = (evt: FormEvent<HTMLFormElement>) => {
+  const onSubmitButton = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    dispatch(login(inputEmailValue, inputPasswordValue));
+    await handleSubmit((data) => {
+      dispatch(login(data.email, data.password));
+    })();
   };
 
   return (
     <div className="user-page">
-      <header className="page-header user-page__head">
-        <div className="logo">
-          <Link to={AppRoutes.Main} className="logo__link">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </Link>
-        </div>
-        <h1 className="page-title user-page__title">Sign in</h1>
-      </header>
+      <Header />
       <div className="sign-in user-page__content">
         <form action="#" className="sign-in__form" onSubmit={onSubmitButton}>
           <div className="sign-in__fields">
             <div className="sign-in__field">
-              <input
-                className="sign-in__input"
-                type="email"
-                placeholder="Email address"
-                name="user-email"
-                id="user-email"
-                onChange={onInputEmailChange}
+              <Controller
+                control={control}
+                name="email"
+                render={({ field, fieldState: { error } }) => (
+                  <>
+                    <input
+                      className="sign-in__input"
+                      type="email"
+                      value={field.value}
+                      placeholder="Email address"
+                      name="user-email"
+                      id="user-email"
+                      onChange={onInputEmailChange}
+                    />
+                    <div>{error?.message}</div>
+                  </>
+                )}
               />
+
               <label
                 className="sign-in__label visually-hidden"
                 htmlFor="user-email"
@@ -70,14 +87,25 @@ function SignIn() {
               </label>
             </div>
             <div className="sign-in__field">
-              <input
-                className="sign-in__input"
-                type="password"
-                placeholder="Password"
-                name="user-password"
-                id="user-password"
-                onChange={onInputPasswordChange}
+              <Controller
+                control={control}
+                name="password"
+                render={({ field, fieldState: { error } }) => (
+                  <>
+                    <input
+                      className="sign-in__input"
+                      type="password"
+                      placeholder="Password"
+                      value={field.value}
+                      name="user-password"
+                      id="user-password"
+                      onChange={onInputPasswordChange}
+                    />
+                    <div>{error?.message}</div>
+                  </>
+                )}
               />
+
               <label
                 className="sign-in__label visually-hidden"
                 htmlFor="user-password"

@@ -1,4 +1,11 @@
-import { Link, Route, Routes, useParams } from 'react-router-dom';
+import {
+  Link,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import NotFound404 from '../not-found-404/not-found-404';
 import { AppRoutes } from '../../constants/consts';
 import MoviePageOverview from '../movie-page-overview/movie-page-overview';
@@ -8,26 +15,53 @@ import MoviePageReviews from '../movie-page-reviews/movie-page-reviews';
 import MovieCard from '../../components/movie-card/movie-card';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchMovie } from '../../store/slices/fimls.thunks';
-import Loader from '../../components/loader/loader';
+import {
+  fetchChangeStatusFilmMyList,
+  fetchMoreLikeThisMovies,
+  fetchMovie,
+} from '../../store/slices/fimls.thunks';
+import Header from '../../components/header/header';
 
 function MoviePage() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const movie = useAppSelector((state) => state.films.film);
-  const movies = useAppSelector((state) => state.films.films);
-  // const isLoading = useAppSelector((state) => state.films.isLoading);
+  const myListMovies = useAppSelector((state) => state.films.myListMovies);
+  const moreLikeThisMovies = useAppSelector(
+    (state) => state.films.moreLikeThisMovies
+  );
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
       dispatch(fetchMovie(id));
     }
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchMoreLikeThisMovies(id));
+    }
+  }, [id]);
 
   if (!movie) {
     return <NotFound404 />;
   }
+
+  const onAddToMyListButtonClick = () => {
+    if (!token) {
+      navigate(AppRoutes.Login);
+    }
+
+    if (token) {
+      const status = !movie.isFavorite;
+
+      if (id) {
+        dispatch(fetchChangeStatusFilmMyList(id, +status));
+      }
+    }
+  };
 
   return (
     <>
@@ -37,30 +71,7 @@ function MoviePage() {
             <img src="img/bg-the-grand-budapest-hotel.jpg" alt={movie.name} />
           </div>
           <h1 className="visually-hidden">WTW</h1>
-          <header className="page-header film-card__head">
-            <div className="logo">
-              <Link to="/" className="logo__link">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </Link>
-            </div>
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img
-                    src="img/avatar.jpg"
-                    alt="User avatar"
-                    width={63}
-                    height={63}
-                  />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
-          </header>
+          <Header />
           <div className="film-card__wrap">
             <div className="film-card__desc">
               <h2 className="film-card__title">{movie.name}</h2>
@@ -84,13 +95,24 @@ function MoviePage() {
                   className="btn btn--list film-card__button"
                   type="button"
                 >
-                  <svg viewBox="0 0 19 20" width={19} height={20}>
-                    <use xlinkHref="#add" />
+                  <svg
+                    viewBox="0 0 19 20"
+                    width={19}
+                    height={20}
+                    onClick={onAddToMyListButtonClick}
+                  >
+                    {movie.isFavorite ? (
+                      <use xlinkHref="#in-list" />
+                    ) : (
+                      <use xlinkHref="#add" />
+                    )}
                   </svg>
                   <Link to={AppRoutes.MyList}>
                     <span>My list</span>
                   </Link>
-                  <span className="film-card__count">9</span>
+                  <span className="film-card__count">
+                    {myListMovies.length}
+                  </span>
                 </button>
                 {token ? (
                   <Link
@@ -134,13 +156,13 @@ function MoviePage() {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
           <div className="catalog__films-list">
-            {movies.map((item) => {
-              if (item.genre === movie.genre && item.name !== movie.name) {
-                return <MovieCard key={item.id} movie={item} />;
-              }
-
-              return null;
-            })}
+            {moreLikeThisMovies.length > 0 ? (
+              moreLikeThisMovies.map((item) => (
+                <MovieCard key={item.id} movie={item} />
+              ))
+            ) : (
+              <p>There&apos;re no similar movies</p>
+            )}
           </div>
         </section>
         <footer className="page-footer">

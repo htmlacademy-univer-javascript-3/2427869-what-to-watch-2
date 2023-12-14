@@ -14,6 +14,8 @@ export interface IFilmsSliceInitialState {
   film: IMovie;
   profile: IProfile | null;
   comments: IReview[];
+  myListMovies: IMovies[];
+  moreLikeThisMovies: IMovies[];
   countFilms: number;
   isLoading: boolean;
   error: string | null;
