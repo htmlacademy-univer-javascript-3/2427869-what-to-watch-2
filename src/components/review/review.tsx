@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { IReview } from '../../types/types';
 
-function Review({ user, comment, rating, date }: IReview) {
+function ReviewComponent({ user, comment, rating, date }: IReview) {
   return (
     <div className="review">
       <blockquote className="review__quote">
@@ -16,5 +17,7 @@ function Review({ user, comment, rating, date }: IReview) {
     </div>
   );
 }
+
+const Review = memo(ReviewComponent);
 
 export default Review;

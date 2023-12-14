@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import styles from './video-player.module.css';
 
 interface IVideoPlayerProps {
@@ -6,7 +6,7 @@ interface IVideoPlayerProps {
   srcImage: string;
 }
 
-function VideoPlayer({ src, srcImage }: IVideoPlayerProps) {
+function VideoPlayerComponent({ src, srcImage }: IVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
 
@@ -48,5 +48,7 @@ function VideoPlayer({ src, srcImage }: IVideoPlayerProps) {
     </div>
   );
 }
+
+const VideoPlayer = memo(VideoPlayerComponent);
 
 export default VideoPlayer;

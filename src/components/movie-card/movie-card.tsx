@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from './movie-card.module.css';
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import VideoPlayer from '../video-player/video-player';
 import { IMovies } from '../../types/types';
 
@@ -9,7 +9,7 @@ interface IMovieCardProps {
   setActiveMovie?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-function MovieCard(props: IMovieCardProps) {
+function MovieCardComponent(props: IMovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -58,5 +58,7 @@ function MovieCard(props: IMovieCardProps) {
     </Link>
   );
 }
+
+const MovieCard = memo(MovieCardComponent);
 
 export default MovieCard;
