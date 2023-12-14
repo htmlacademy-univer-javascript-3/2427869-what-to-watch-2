@@ -133,29 +133,29 @@ export const fetchReviews = (id: string) => async (dispatch: TAppDispatch) => {
 
 export const sendComment =
   (id: string, comment: string, rating: number) =>
-  async (dispatch: TAppDispatch) => {
-    const token = localStorage.getItem('token');
+    async (dispatch: TAppDispatch) => {
+      const token = localStorage.getItem('token');
 
-    try {
-      dispatch(setLoader());
+      try {
+        dispatch(setLoader());
 
-      if (token) {
-        await createAxiosInstance(baseURL).post(
-          `/comments/${id}`,
-          {
-            comment,
-            rating,
-          },
-          {
-            headers: {
-              'X-Token': token,
+        if (token) {
+          await createAxiosInstance(baseURL).post(
+            `/comments/${id}`,
+            {
+              comment,
+              rating,
             },
-          }
-        );
+            {
+              headers: {
+                'X-Token': token,
+              },
+            }
+          );
+        }
+      } catch (error) {
+        dispatch(setError());
+      } finally {
+        dispatch(unsetLoader());
       }
-    } catch (error) {
-      dispatch(setError());
-    } finally {
-      dispatch(unsetLoader());
-    }
-  };
+    };
