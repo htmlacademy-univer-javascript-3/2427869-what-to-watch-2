@@ -68,6 +68,20 @@ export const setCommentsDataAction = (
   state.comments = action.payload;
 };
 
+export const setMyListMoviesAction = (
+  state: IFilmsSliceInitialState,
+  action: PayloadAction<IMovies[]>
+) => {
+  state.myListMovies = action.payload;
+};
+
+export const setMoreLikeThisMoviesAction = (
+  state: IFilmsSliceInitialState,
+  action: PayloadAction<IMovies[]>
+) => {
+  state.moreLikeThisMovies = action.payload;
+};
+
 export const showMoreFilmsAction = (state: IFilmsSliceInitialState) => {
   state.countFilms += 8;
 };

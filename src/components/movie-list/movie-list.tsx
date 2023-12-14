@@ -1,17 +1,15 @@
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import MovieCard from '../movie-card/movie-card';
+import { IMovies } from '../../types/types';
 
 interface IMovieListProps {
+  movies: IMovies[];
   setActiveMovie: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 function MovieList(props: IMovieListProps) {
-  const movies = useAppSelector((state) => state.films.films);
-  const dispatch = useAppDispatch();
-
   return (
     <>
-      {movies.map((movie) => (
+      {props.movies.map((movie) => (
         <MovieCard
           key={movie.id}
           movie={movie}

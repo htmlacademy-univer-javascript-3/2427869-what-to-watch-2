@@ -1,13 +1,11 @@
 import { Navigate } from 'react-router-dom';
-import { AuthStatus, AppRoutes } from '../../constants/consts';
+import { AppRoutes } from '../../constants/consts';
 import MyList from '../../pages/my-list/my-list';
 
-interface IPrivateRouteMyListPageProps {
-  authStatus: AuthStatus;
-}
+function PrivateRouteMyListPage() {
+  const token = localStorage.getItem('token');
 
-function PrivateRouteMyListPage(props: IPrivateRouteMyListPageProps) {
-  if (props.authStatus === AuthStatus.NotAuth) {
+  if (!token) {
     return <Navigate to={AppRoutes.Login} />;
   }
 

@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { baseURL } from '../constants/consts';
 
 export function createAxiosInstance(
   baseURL: string,
@@ -10,3 +11,5 @@ export function createAxiosInstance(
     timeout: 5000,
   });
 }
+
+export const axiosInstance = createAxiosInstance(baseURL);

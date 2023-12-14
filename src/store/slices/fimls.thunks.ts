@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { createAxiosInstance } from '../../api/api';
+import { axiosInstance, createAxiosInstance } from '../../api/api';
 import { baseURL } from '../../constants/consts';
 import {
   IMovie,
@@ -15,18 +15,22 @@ import {
   setFilms,
   setLoader,
   setLoginError,
+  setMoreLikeThisMovies,
   setMovie,
+  setMyListMovies,
   setProfileData,
   setPromoMovie,
+  successLogin,
+  successSignOut,
+  unsetError,
   unsetLoader,
 } from './films.slice';
 
 export const fetchMovies = () => async (dispatch: TAppDispatch) => {
   try {
+    dispatch(unsetError());
     dispatch(setLoader());
-    const data: AxiosResponse<IMovies[]> = await createAxiosInstance(
-      baseURL
-    ).get('/films');
+    const data: AxiosResponse<IMovies[]> = await axiosInstance.get('/films');
 
     const movies: IMovies[] = data.data;
 
@@ -40,9 +44,17 @@ export const fetchMovies = () => async (dispatch: TAppDispatch) => {
 
 export const fetchMovie = (id: string) => async (dispatch: TAppDispatch) => {
   try {
+    dispatch(unsetError());
     dispatch(setLoader());
-    const data: AxiosResponse<IMovie> = await createAxiosInstance(baseURL).get(
-      `/films/${id}`
+    const token = localStorage.getItem('token');
+
+    const headers = token ? { 'X-Token': token } : undefined;
+
+    const data: AxiosResponse<IMovie> = await axiosInstance.get(
+      `/films/${id}`,
+      {
+        headers: headers,
+      }
     );
 
     const movie: IMovie = data.data;
@@ -57,11 +69,10 @@ export const fetchMovie = (id: string) => async (dispatch: TAppDispatch) => {
 
 export const fetchPromoMovie = () => async (dispatch: TAppDispatch) => {
   try {
+    dispatch(unsetError());
     dispatch(setLoader());
 
-    const data: AxiosResponse<IPromoMovie> = await createAxiosInstance(
-      baseURL
-    ).get('/promo');
+    const data: AxiosResponse<IPromoMovie> = await axiosInstance.get('/promo');
 
     const movie: IPromoMovie = data.data;
 
@@ -76,11 +87,10 @@ export const fetchPromoMovie = () => async (dispatch: TAppDispatch) => {
 export const login =
   (email: string, password: string) => async (dispatch: TAppDispatch) => {
     try {
+      dispatch(unsetError());
       dispatch(setLoader());
 
-      const data: AxiosResponse<IProfile> = await createAxiosInstance(
-        baseURL
-      ).post('/login', {
+      const data: AxiosResponse<IProfile> = await axiosInstance.post('/login', {
         email,
         password,
       });
@@ -88,6 +98,7 @@ export const login =
       const profileData: IProfile = data.data;
       localStorage.setItem('token', profileData.token);
 
+      dispatch(successLogin());
       dispatch(setProfileData(profileData));
     } catch (error) {
       dispatch(setLoginError());
@@ -98,14 +109,17 @@ export const login =
 
 export const signOut = (token: string) => async (dispatch: TAppDispatch) => {
   try {
+    dispatch(unsetError());
     dispatch(setLoader());
     localStorage.removeItem('token');
 
-    await createAxiosInstance(baseURL).delete('/logout', {
+    await axiosInstance.delete('/logout', {
       headers: {
         'X-Token': token,
       },
     });
+
+    dispatch(successSignOut());
   } catch (error) {
     dispatch(setError());
   } finally {
@@ -115,11 +129,12 @@ export const signOut = (token: string) => async (dispatch: TAppDispatch) => {
 
 export const fetchReviews = (id: string) => async (dispatch: TAppDispatch) => {
   try {
+    dispatch(unsetError());
     dispatch(setLoader());
 
-    const data: AxiosResponse<IReview[]> = await createAxiosInstance(
-      baseURL
-    ).get(`/comments/${id}`);
+    const data: AxiosResponse<IReview[]> = await axiosInstance.get(
+      `/comments/${id}`
+    );
 
     const reviews: IReview[] = data.data;
 
@@ -137,10 +152,11 @@ export const sendComment =
       const token = localStorage.getItem('token');
 
       try {
+        dispatch(unsetError());
         dispatch(setLoader());
 
         if (token) {
-          await createAxiosInstance(baseURL).post(
+          await axiosInstance.post(
             `/comments/${id}`,
             {
               comment,
@@ -159,3 +175,70 @@ export const sendComment =
         dispatch(unsetLoader());
       }
     };
+
+export const fetchMyListMovies = () => async (dispatch: TAppDispatch) => {
+  try {
+    dispatch(unsetError());
+    dispatch(setLoader());
+    const token = localStorage.getItem('token');
+
+    const data: AxiosResponse<IMovies[]> = await axiosInstance.get(
+      '/favorite',
+      {
+        headers: {
+          'X-Token': token as string,
+        },
+      }
+    );
+
+    const movies = data.data;
+
+    dispatch(setMyListMovies(movies));
+  } catch (error) {
+    dispatch(setError());
+  } finally {
+    dispatch(unsetLoader());
+  }
+};
+
+export const fetchChangeStatusFilmMyList =
+  (filmId: string, status: number) => async (dispatch: TAppDispatch) => {
+    try {
+      dispatch(unsetError());
+      dispatch(setLoader());
+      const token = localStorage.getItem('token');
+      const headers = token ? { 'X-Token': token } : undefined;
+
+      await axiosInstance.post(
+        `/favorite/${filmId}/${status}`,
+        {},
+        {
+          headers: headers,
+        }
+      );
+    } catch (error) {
+      dispatch(setError());
+    } finally {
+      dispatch(unsetLoader());
+    }
+  };
+
+export const fetchMoreLikeThisMovies =
+  (filmId: string) => async (dispatch: TAppDispatch) => {
+    try {
+      dispatch(unsetError());
+      dispatch(setLoader());
+
+      const data: AxiosResponse<IMovies[]> = await axiosInstance.get(
+        `/films/${filmId}/similar`
+      );
+
+      const movies = data.data;
+
+      dispatch(setMoreLikeThisMovies(movies));
+    } catch (error) {
+      dispatch(setError());
+    } finally {
+      dispatch(unsetLoader());
+    }
+  };
