@@ -16,6 +16,7 @@ function MoviePage() {
   const dispatch = useAppDispatch();
   const movie = useAppSelector((state) => state.films.film);
   const movies = useAppSelector((state) => state.films.films);
+  // const isLoading = useAppSelector((state) => state.films.isLoading);
   const token = localStorage.getItem('token');
 
   useEffect(() => {

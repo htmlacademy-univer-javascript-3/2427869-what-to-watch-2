@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, memo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { sendComment } from '../../store/slices/fimls.thunks';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ interface IFormSendCommentProps {
   id: string;
 }
 
-function FormSendComment({ id }: IFormSendCommentProps) {
+function FormSendCommentComponent({ id }: IFormSendCommentProps) {
   const stars = useAppSelector((state) => state.films.film.rating);
   const error = useAppSelector((state) => state.films.error);
   const [textareaValue, setTextareaValue] = useState('');
@@ -178,4 +178,5 @@ function FormSendComment({ id }: IFormSendCommentProps) {
   );
 }
 
+const FormSendComment = memo(FormSendCommentComponent);
 export default FormSendComment;

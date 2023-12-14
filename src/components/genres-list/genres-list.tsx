@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Genres } from '../../constants/consts';
 import { useAppDispatch } from '../../store/hooks';
 import { changeFilmsGenre } from '../../store/slices/films.slice';
@@ -8,7 +9,7 @@ interface IGenresListProps {
   setGenre: (value: Genres) => void;
 }
 
-function GenresList(props: IGenresListProps) {
+function GenresListComponent(props: IGenresListProps) {
   const dispatch = useAppDispatch();
 
   const selectGenre = (genre: Genres) => {
@@ -174,5 +175,7 @@ function GenresList(props: IGenresListProps) {
     </ul>
   );
 }
+
+const GenresList = memo(GenresListComponent);
 
 export default GenresList;
