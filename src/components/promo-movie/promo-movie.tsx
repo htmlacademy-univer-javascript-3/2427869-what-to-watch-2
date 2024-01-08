@@ -1,17 +1,40 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../constants/consts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
-import { fetchPromoMovie } from '../../store/slices/fimls.thunks';
+import {
+  fetchChangeStatusFilmMyList,
+  fetchMyListMovies,
+  fetchPromoMovie,
+} from '../../store/slices/fimls.thunks';
 
 function PromoMovie() {
   const dispatch = useAppDispatch();
   const promoMovie = useAppSelector((state) => state.films.promoMovie);
   const myListMovies = useAppSelector((state) => state.films.myListMovies);
+  const isLoading = useAppSelector((state) => state.films.isLoading);
+  const token = localStorage.getItem('wtw-token');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchPromoMovie());
-  }, []);
+  }, [myListMovies]);
+
+  const onAddToMyListButtonClick = async () => {
+    if (!token) {
+      navigate(AppRoutes.Login);
+    }
+
+    if (token && promoMovie) {
+      const status = !promoMovie.isFavorite;
+
+      if (promoMovie.id) {
+        await dispatch(fetchChangeStatusFilmMyList(promoMovie.id, +status));
+        await dispatch(fetchMyListMovies());
+      }
+    }
+  };
 
   return (
     <div className="film-card__wrap">
@@ -31,7 +54,11 @@ function PromoMovie() {
             <span className="film-card__year">{promoMovie?.released}</span>
           </p>
           <div className="film-card__buttons">
-            <button className="btn btn--play film-card__button" type="button">
+            <button
+              className="btn btn--play film-card__button"
+              type="button"
+              disabled={isLoading}
+            >
               <svg viewBox="0 0 19 19" width={19} height={19}>
                 <use xlinkHref="#play-s" />
               </svg>
@@ -39,13 +66,20 @@ function PromoMovie() {
                 <span>Play</span>
               </Link>
             </button>
-            <button className="btn btn--list film-card__button" type="button">
+            <button
+              disabled={isLoading}
+              className="btn btn--list film-card__button"
+              type="button"
+              onClick={onAddToMyListButtonClick}
+            >
               <svg viewBox="0 0 19 20" width={19} height={20}>
-                <use xlinkHref="#add" />
+                {promoMovie?.isFavorite ? (
+                  <use xlinkHref="#in-list" />
+                ) : (
+                  <use xlinkHref="#add" />
+                )}
               </svg>
-              <Link to={AppRoutes.MyList}>
-                <span>My list</span>
-              </Link>
+              <span>My list</span>
               <span className="film-card__count">{myListMovies.length}</span>
             </button>
           </div>

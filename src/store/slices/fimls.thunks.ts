@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { axiosInstance, createAxiosInstance } from '../../api/api';
-import { baseURL } from '../../constants/consts';
+import { axiosInstance } from '../../api/api';
 import {
   IMovie,
   IMovies,
@@ -46,7 +45,7 @@ export const fetchMovie = (id: string) => async (dispatch: TAppDispatch) => {
   try {
     dispatch(unsetError());
     dispatch(setLoader());
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('wtw-token');
 
     const headers = token ? { 'X-Token': token } : undefined;
 
@@ -96,7 +95,7 @@ export const login =
       });
 
       const profileData: IProfile = data.data;
-      localStorage.setItem('token', profileData.token);
+      localStorage.setItem('wtw-token', profileData.token);
 
       dispatch(successLogin());
       dispatch(setProfileData(profileData));
@@ -111,7 +110,7 @@ export const signOut = (token: string) => async (dispatch: TAppDispatch) => {
   try {
     dispatch(unsetError());
     dispatch(setLoader());
-    localStorage.removeItem('token');
+    localStorage.removeItem('wtw-token');
 
     await axiosInstance.delete('/logout', {
       headers: {
@@ -149,7 +148,7 @@ export const fetchReviews = (id: string) => async (dispatch: TAppDispatch) => {
 export const sendComment =
   (id: string, comment: string, rating: number) =>
     async (dispatch: TAppDispatch) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('wtw-token');
 
       try {
         dispatch(unsetError());
@@ -180,7 +179,7 @@ export const fetchMyListMovies = () => async (dispatch: TAppDispatch) => {
   try {
     dispatch(unsetError());
     dispatch(setLoader());
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('wtw-token');
 
     const data: AxiosResponse<IMovies[]> = await axiosInstance.get(
       '/favorite',
@@ -206,7 +205,7 @@ export const fetchChangeStatusFilmMyList =
     try {
       dispatch(unsetError());
       dispatch(setLoader());
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('wtw-token');
       const headers = token ? { 'X-Token': token } : undefined;
 
       await axiosInstance.post(
@@ -242,3 +241,25 @@ export const fetchMoreLikeThisMovies =
       dispatch(unsetLoader());
     }
   };
+
+export const fetchProfileData = () => async (dispatch: TAppDispatch) => {
+  try {
+    dispatch(unsetError());
+    dispatch(setLoader());
+    const token = localStorage.getItem('wtw-token');
+
+    const headers = token ? { 'X-Token': token } : undefined;
+
+    const data: AxiosResponse<IProfile> = await axiosInstance.get('/login', {
+      headers: headers,
+    });
+
+    const profileData = data.data;
+
+    dispatch(setProfileData(profileData));
+  } catch (error) {
+    dispatch(setError());
+  } finally {
+    dispatch(unsetLoader());
+  }
+};

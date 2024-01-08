@@ -7,6 +7,7 @@ import { validationSchema } from '../../pages/sign-in/sign-in.schema';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
 
 interface IDefaultFormValues {
   email: string;
@@ -16,7 +17,6 @@ interface IDefaultFormValues {
 function SignIn() {
   const dispatch = useAppDispatch();
   const errorMessage = useAppSelector((state) => state.films.loginError);
-  const token = useAppSelector((state) => state.films.profile?.token);
   const authStatus = useAppSelector((state) => state.films.authorizationStatus);
   const navigate = useNavigate();
 
@@ -122,18 +122,7 @@ function SignIn() {
           </div>
         </form>
       </div>
-      <footer className="page-footer">
-        <div className="logo">
-          <a href="main.html" className="logo__link logo__link--light">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </a>
-        </div>
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

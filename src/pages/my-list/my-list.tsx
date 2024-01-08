@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchMyListMovies } from '../../store/slices/fimls.thunks';
 import Header from '../../components/header/header';
@@ -7,7 +7,6 @@ import MovieList from '../../components/movie-list/movie-list';
 function MyList() {
   const dispatch = useAppDispatch();
   const movies = useAppSelector((state) => state.films.myListMovies);
-  const [activeMovie, setActiveMovie] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(fetchMyListMovies());
@@ -20,7 +19,7 @@ function MyList() {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
         <div className="catalog__films-list">
           {movies.length !== 0 ? (
-            <MovieList setActiveMovie={setActiveMovie} movies={movies} />
+            <MovieList movies={movies} />
           ) : (
             <p>There&apos;re no movies in your list</p>
           )}

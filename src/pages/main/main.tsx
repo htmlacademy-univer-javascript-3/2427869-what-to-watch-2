@@ -11,9 +11,9 @@ import ShowMore from '../../components/show-more/show-more';
 import Loader from '../../components/loader/loader';
 import PromoMovie from '../../components/promo-movie/promo-movie';
 import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
 
 function Main() {
-  const [activeMovie, setActiveMovie] = useState<string | null>(null);
   const movies = useAppSelector((state) => state.films.films);
   const [genre, setGenre] = useState<Genres>(Genres.All);
   const countFilms = useAppSelector((state) => state.films.countFilms);
@@ -54,24 +54,13 @@ function Main() {
             ) : error ? (
               <p>{error}</p>
             ) : (
-              <MovieList setActiveMovie={setActiveMovie} movies={movies} />
+              <MovieList movies={movies} />
             )}
             {/* eslint-enable */}
           </div>
           <ShowMore />
         </section>
-        <footer className="page-footer">
-          <div className="logo">
-            <a className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

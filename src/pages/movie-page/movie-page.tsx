@@ -1,11 +1,4 @@
-import {
-  Link,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import NotFound404 from '../not-found-404/not-found-404';
 import { AppRoutes } from '../../constants/consts';
 import MoviePageOverview from '../movie-page-overview/movie-page-overview';
@@ -19,8 +12,10 @@ import {
   fetchChangeStatusFilmMyList,
   fetchMoreLikeThisMovies,
   fetchMovie,
+  fetchMyListMovies,
 } from '../../store/slices/fimls.thunks';
 import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
 
 function MoviePage() {
   const { id } = useParams();
@@ -30,14 +25,19 @@ function MoviePage() {
   const moreLikeThisMovies = useAppSelector(
     (state) => state.films.moreLikeThisMovies
   );
-  const token = localStorage.getItem('token');
+  const isLoading = useAppSelector((state) => state.films.isLoading);
+  const token = localStorage.getItem('wtw-token');
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchMovieById = async () => {
     if (id) {
-      dispatch(fetchMovie(id));
+      await dispatch(fetchMovie(id));
     }
-  }, [id]);
+  };
+
+  useEffect(() => {
+    fetchMovieById();
+  }, [id, myListMovies]);
 
   useEffect(() => {
     if (id) {
@@ -49,7 +49,7 @@ function MoviePage() {
     return <NotFound404 />;
   }
 
-  const onAddToMyListButtonClick = () => {
+  const onAddToMyListButtonClick = async () => {
     if (!token) {
       navigate(AppRoutes.Login);
     }
@@ -58,7 +58,8 @@ function MoviePage() {
       const status = !movie.isFavorite;
 
       if (id) {
-        dispatch(fetchChangeStatusFilmMyList(id, +status));
+        await dispatch(fetchChangeStatusFilmMyList(id, +status));
+        await dispatch(fetchMyListMovies());
       }
     }
   };
@@ -81,6 +82,7 @@ function MoviePage() {
               </p>
               <div className="film-card__buttons">
                 <button
+                  disabled={isLoading}
                   className="btn btn--play film-card__button"
                   type="button"
                 >
@@ -92,31 +94,26 @@ function MoviePage() {
                   </Link>
                 </button>
                 <button
+                  disabled={isLoading}
                   className="btn btn--list film-card__button"
                   type="button"
+                  onClick={onAddToMyListButtonClick}
                 >
-                  <svg
-                    viewBox="0 0 19 20"
-                    width={19}
-                    height={20}
-                    onClick={onAddToMyListButtonClick}
-                  >
+                  <svg viewBox="0 0 19 20" width={19} height={20}>
                     {movie.isFavorite ? (
                       <use xlinkHref="#in-list" />
                     ) : (
                       <use xlinkHref="#add" />
                     )}
                   </svg>
-                  <Link to={AppRoutes.MyList}>
-                    <span>My list</span>
-                  </Link>
+                  <span>My list</span>
                   <span className="film-card__count">
                     {myListMovies.length}
                   </span>
                 </button>
                 {token ? (
                   <Link
-                    to={`/films/${movie.id}/addreview`}
+                    to={`/films/${movie.id}/review`}
                     className="btn film-card__button"
                   >
                     Add review
@@ -138,15 +135,10 @@ function MoviePage() {
             </div>
             <div className="film-card__desc">
               <Tabs />
-              {/* {isLoading ? (
-                <Loader />
-              ) : (
-
-              )} */}
               <Routes>
-                <Route path="overview" element={<MoviePageOverview />} />
+                <Route path="/" element={<MoviePageOverview />} />
                 <Route path="details" element={<MoviePageDetails />} />
-                <Route path="review" element={<MoviePageReviews />} />
+                <Route path="reviews" element={<MoviePageReviews />} />
               </Routes>
             </div>
           </div>
@@ -165,18 +157,7 @@ function MoviePage() {
             )}
           </div>
         </section>
-        <footer className="page-footer">
-          <div className="logo">
-            <Link to={AppRoutes.Main} className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );
