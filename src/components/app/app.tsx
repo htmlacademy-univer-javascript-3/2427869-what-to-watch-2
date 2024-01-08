@@ -3,22 +3,37 @@ import Main from '../../pages/main/main';
 import NotFound404 from '../../pages/not-found-404/not-found-404';
 import MoviePage from '../../pages/movie-page/movie-page';
 import Player from '../../pages/player/player';
-import { AppRoutes, AuthStatus } from '../../constants/consts';
+import { AppRoutes } from '../../constants/consts';
 import PrivateRouteMyListPage from '../private-route-my-list-page/private-route-my-list-page';
-import AddReview from '../../pages/add-review/add-review';
 import MoviePageOverview from '../../pages/movie-page-overview/movie-page-overview';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../store/hooks';
-import { fetchMovies } from '../../store/slices/fimls.thunks';
+import {
+  fetchMovies,
+  fetchMyListMovies,
+  fetchProfileData,
+} from '../../store/slices/fimls.thunks';
 import PrivateRouteLogin from '../private-route-login/private-route-login';
-
-const isAuth = AuthStatus.NotAuth;
+import PrivateRouteAddReview from '../private-route-add-review/private-route-add-review';
 
 function App() {
   const dispatch = useAppDispatch();
+  const token = localStorage.getItem('wtw-token');
 
   useEffect(() => {
     dispatch(fetchMovies());
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchProfileData());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchMyListMovies());
+    }
   }, []);
 
   return (
@@ -27,18 +42,15 @@ function App() {
         <Route path={AppRoutes.Main}>
           <Route index element={<Main />} />
           <Route path={AppRoutes.Login} element={<PrivateRouteLogin />} />
-          <Route
-            path={AppRoutes.MyList}
-            element={<PrivateRouteMyListPage authStatus={isAuth} />}
-          />
+          <Route path={AppRoutes.MyList} element={<PrivateRouteMyListPage />} />
           <Route path={`${AppRoutes.Movie}`} element={<MoviePage />}>
-            <Route
-              path={AppRoutes.MovieOverview}
-              element={<MoviePageOverview />}
-            />
+            <Route path={AppRoutes.Movie} element={<MoviePageOverview />} />
           </Route>
           <Route path={AppRoutes.Player} element={<Player />} />
-          <Route path="/films/:id/addreview" element={<AddReview />} />
+          <Route
+            path={AppRoutes.AddReview}
+            element={<PrivateRouteAddReview />}
+          />
           <Route path={AppRoutes.NotFound} element={<NotFound404 />} />
         </Route>
       </Routes>

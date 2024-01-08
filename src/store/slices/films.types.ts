@@ -11,7 +11,7 @@ export interface IFilmsSliceInitialState {
   currentGenre: Genres;
   allFilms: IMovies[];
   films: IMovies[];
-  film: IMovie;
+  film: IMovie | null;
   profile: IProfile | null;
   comments: IReview[];
   myListMovies: IMovies[];

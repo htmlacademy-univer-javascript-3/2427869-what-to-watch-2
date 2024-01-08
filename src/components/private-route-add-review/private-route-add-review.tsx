@@ -3,10 +3,10 @@ import { AppRoutes } from '../../constants/consts';
 import AddReview from '../../pages/add-review/add-review';
 
 function PrivateRouteAddReview() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('wtw-token');
 
   if (!token) {
-    <Navigate to={AppRoutes.Login} />;
+    return <Navigate to={AppRoutes.Login} />;
   }
 
   return <AddReview />;

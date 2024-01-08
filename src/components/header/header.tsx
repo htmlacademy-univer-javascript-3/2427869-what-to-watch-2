@@ -5,8 +5,8 @@ import { signOut } from '../../store/slices/fimls.thunks';
 import styles from './header.module.css';
 
 function Header() {
-  const authStatus = useAppSelector((state) => state.films.authorizationStatus);
-  const token = localStorage.getItem('token');
+  const profileData = useAppSelector((state) => state.films.profile);
+  const token = localStorage.getItem('wtw-token');
   const dispatch = useAppDispatch();
   const location = useLocation();
   const movies = useAppSelector((state) => state.films.myListMovies);
@@ -42,15 +42,17 @@ function Header() {
           ) : null}
         </li>
         <li className="user-block__item">
-          {authStatus || token ? (
-            <div className="user-block__avatar">
-              <img
-                src="img/avatar.jpg"
-                alt="User avatar"
-                width={63}
-                height={63}
-              />
-            </div>
+          {profileData ? (
+            <Link to={AppRoutes.MyList}>
+              <div className="user-block__avatar">
+                <img
+                  src={profileData.avatarUrl}
+                  alt="User avatar"
+                  width={63}
+                  height={63}
+                />
+              </div>
+            </Link>
           ) : null}
         </li>
 
@@ -58,7 +60,7 @@ function Header() {
           <li className="user-block__item">
             {!token ? (
               <Link to={AppRoutes.Login} className="user-block__link">
-                Login
+                Sign in
               </Link>
             ) : (
               <Link

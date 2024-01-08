@@ -6,7 +6,6 @@ import { IMovies } from '../../types/types';
 
 interface IMovieCardProps {
   movie: IMovies;
-  setActiveMovie?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 function MovieCardComponent(props: IMovieCardProps) {
@@ -26,15 +25,13 @@ function MovieCardComponent(props: IMovieCardProps) {
   };
 
   return (
-    <Link className={styles.link} to={`/films/${props.movie.id}/overview`}>
+    <Link className={styles.link} to={`/films/${props.movie.id}`}>
       <article
         className={`small-film-card catalog__films-card ${styles.article}`}
         onMouseEnter={() => {
-          props.setActiveMovie?.(props.movie.id);
           handleMouseOver();
         }}
         onMouseLeave={() => {
-          props.setActiveMovie?.(null);
           handleMouseOut();
         }}
       >

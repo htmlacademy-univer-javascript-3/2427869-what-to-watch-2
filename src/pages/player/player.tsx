@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import NotFound404 from '../not-found-404/not-found-404';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchMovie } from '../../store/slices/fimls.thunks';
 
@@ -11,6 +11,7 @@ function Player() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isFirstPlay, setIsFirstPlay] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -30,11 +31,6 @@ function Player() {
     if (video) {
       video.addEventListener('timeupdate', updateTime);
 
-      if (film) {
-        video.play();
-        setIsPlaying(true);
-      }
-
       return () => {
         video.removeEventListener('timeupdate', updateTime);
       };
@@ -45,10 +41,21 @@ function Player() {
     const video = videoRef.current;
 
     if (video) {
-      if (isPlaying) {
-        video.pause();
+      if (!isPlaying && film && isFirstPlay) {
+        const playPromise = video.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsFirstPlay(false);
+            })
+            .catch(() => {
+              // Auto-play was prevented
+              // Show paused UI.
+            });
+        }
       } else {
-        video.play();
+        video.pause();
       }
 
       setIsPlaying(!isPlaying);
@@ -62,6 +69,22 @@ function Player() {
     }
   }, []);
 
+  function formatTime(totalSeconds: number) {
+    if (typeof totalSeconds !== 'number' || isNaN(totalSeconds)) {
+      return '-00:00:00';
+    }
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = Math.floor(totalSeconds % 60);
+
+    const formattedHours = String(Math.abs(hours)).padStart(2, '0');
+    const formattedMinutes = String(Math.abs(minutes)).padStart(2, '0');
+    const formattedSeconds = String(Math.abs(seconds)).padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
+
   return (
     <div className="player">
       {film ? (
@@ -70,11 +93,12 @@ function Player() {
             ref={videoRef}
             src={film.videoLink}
             className="player__video"
-            autoPlay
           />
-          <button type="button" className="player__exit">
-            Exit
-          </button>
+          <Link to={`/films/${id as string}/`}>
+            <button type="button" className="player__exit">
+              Exit
+            </button>
+          </Link>
           <div className="player__controls">
             <div className="player__controls-row">
               <div className="player__time">
@@ -90,9 +114,9 @@ function Player() {
                   Toggler
                 </div>
               </div>
-              <div className="player__time-value">{`0:${film.runTime / 10
-              }`}
-              </div>
+              <div className="player__time-value">{`${formatTime(
+                film.runTime * 60
+              )}`}</div>
             </div>
             <div className="player__controls-row">
               <button
