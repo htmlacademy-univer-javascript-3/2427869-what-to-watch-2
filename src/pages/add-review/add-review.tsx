@@ -14,7 +14,7 @@ function AddReview() {
     if (id) {
       dispatch(fetchMovie(id));
     }
-  }, []);
+  }, [dispatch, id]);
 
   return (
     movie && (

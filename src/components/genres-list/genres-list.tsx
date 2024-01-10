@@ -6,7 +6,7 @@ import styles from './genres-list.module.css';
 
 interface IGenresListProps {
   genre: Genres;
-  setGenre: (value: Genres) => void;
+  onSetGenre: (value: Genres) => void;
 }
 
 function GenresListComponent(props: IGenresListProps) {
@@ -26,7 +26,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.All);
+            props.onSetGenre(Genres.All);
             selectGenre(Genres.All);
           }}
         >
@@ -41,7 +41,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.Comedies);
+            props.onSetGenre(Genres.Comedies);
             selectGenre(Genres.Comedies);
           }}
         >
@@ -56,7 +56,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.Crime);
+            props.onSetGenre(Genres.Crime);
             selectGenre(Genres.Crime);
           }}
         >
@@ -73,7 +73,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.Documentary);
+            props.onSetGenre(Genres.Documentary);
             selectGenre(Genres.Documentary);
           }}
         >
@@ -88,7 +88,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.Dramas);
+            props.onSetGenre(Genres.Dramas);
             selectGenre(Genres.Dramas);
           }}
         >
@@ -103,7 +103,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.Horror);
+            props.onSetGenre(Genres.Horror);
             selectGenre(Genres.Horror);
           }}
         >
@@ -120,7 +120,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.KidsAndFamily);
+            props.onSetGenre(Genres.KidsAndFamily);
             selectGenre(Genres.KidsAndFamily);
           }}
         >
@@ -135,7 +135,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.Romance);
+            props.onSetGenre(Genres.Romance);
             selectGenre(Genres.Romance);
           }}
         >
@@ -150,7 +150,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.SciFi);
+            props.onSetGenre(Genres.SciFi);
             selectGenre(Genres.SciFi);
           }}
         >
@@ -165,7 +165,7 @@ function GenresListComponent(props: IGenresListProps) {
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.setGenre(Genres.Thrillers);
+            props.onSetGenre(Genres.Thrillers);
             selectGenre(Genres.Thrillers);
           }}
         >

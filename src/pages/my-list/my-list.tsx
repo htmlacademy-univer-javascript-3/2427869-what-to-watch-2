@@ -10,7 +10,7 @@ function MyList() {
 
   useEffect(() => {
     dispatch(fetchMyListMovies());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="user-page">
