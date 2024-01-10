@@ -26,6 +26,7 @@ function FormSendCommentComponent({ id }: IFormSendCommentProps) {
     comment: '',
   };
 
+  /* eslint-disable */
   const { handleSubmit, control, setValue, watch } =
     useForm<IDefaultFormValues>({
       defaultValues,
@@ -310,18 +311,15 @@ function FormSendCommentComponent({ id }: IFormSendCommentProps) {
         <Controller
           control={control}
           name="comment"
-          render={({ field, fieldState: { error } }) => (
-            <>
-              <textarea
-                className="add-review__textarea"
-                name="review-text"
-                id="review-text"
-                placeholder="Review text"
-                value={field.value}
-                onChange={onChangeComment}
-              />
-              <div>{error?.message}</div>
-            </>
+          render={({ field }) => (
+            <textarea
+              className="add-review__textarea"
+              name="review-text"
+              id="review-text"
+              placeholder="Review text"
+              value={field.value}
+              onChange={onChangeComment}
+            />
           )}
         />
         <div>{error}</div>

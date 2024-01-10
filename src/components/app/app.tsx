@@ -22,19 +22,19 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchMovies());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (token) {
       dispatch(fetchProfileData());
     }
-  }, []);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (token) {
       dispatch(fetchMyListMovies());
     }
-  }, []);
+  }, [dispatch, token]);
 
   return (
     <BrowserRouter>

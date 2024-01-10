@@ -24,11 +24,11 @@ function Main() {
 
   useEffect(() => {
     dispatch(resetCountFilms());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getFimlsByGenre(genre));
-  }, [genre, countFilms]);
+  }, [genre, countFilms, dispatch]);
 
   return (
     <>
@@ -46,7 +46,7 @@ function Main() {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresList genre={genre} setGenre={setGenre} />
+          <GenresList genre={genre} onSetGenre={setGenre} />
           <div className="catalog__films-list">
             {/* eslint-disable */}
             {isLoading ? (

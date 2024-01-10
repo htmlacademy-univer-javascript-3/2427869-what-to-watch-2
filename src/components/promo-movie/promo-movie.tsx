@@ -19,7 +19,7 @@ function PromoMovie() {
 
   useEffect(() => {
     dispatch(fetchPromoMovie());
-  }, [myListMovies]);
+  }, [myListMovies, dispatch]);
 
   const onAddToMyListButtonClick = async () => {
     if (!token) {
@@ -36,6 +36,7 @@ function PromoMovie() {
     }
   };
 
+  /* eslint-disable */
   return (
     <div className="film-card__wrap">
       <div className="film-card__info">

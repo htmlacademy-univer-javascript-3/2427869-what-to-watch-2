@@ -116,7 +116,8 @@ function Player() {
               </div>
               <div className="player__time-value">{`${formatTime(
                 film.runTime * 60
-              )}`}</div>
+              )}`}
+              </div>
             </div>
             <div className="player__controls-row">
               <button

@@ -6,7 +6,7 @@ import MoviePageDetails from '../movie-page-details/movie-page-details';
 import Tabs from '../../components/tabs/tabs';
 import MoviePageReviews from '../movie-page-reviews/movie-page-reviews';
 import MovieCard from '../../components/movie-card/movie-card';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   fetchChangeStatusFilmMyList,
@@ -29,21 +29,21 @@ function MoviePage() {
   const token = localStorage.getItem('wtw-token');
   const navigate = useNavigate();
 
-  const fetchMovieById = async () => {
+  const fetchMovieById = useCallback(async () => {
     if (id) {
       await dispatch(fetchMovie(id));
     }
-  };
+  }, [id, dispatch]);
 
   useEffect(() => {
     fetchMovieById();
-  }, [id, myListMovies]);
+  }, [id, myListMovies, fetchMovieById]);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchMoreLikeThisMovies(id));
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   if (!movie) {
     return <NotFound404 />;
@@ -64,6 +64,7 @@ function MoviePage() {
     }
   };
 
+  /* eslint-disable */
   return (
     <>
       <section className="film-card film-card--full">

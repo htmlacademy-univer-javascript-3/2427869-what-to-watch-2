@@ -28,4 +28,4 @@ export enum Genres {
   Thrillers = 'Thrillers',
 }
 
-export const baseURL = 'https://13.design.pages.academy/wtw';
+export const BASE_URL = 'https://13.design.pages.academy/wtw';

@@ -13,7 +13,7 @@ function MoviePageReviews() {
     if (id) {
       dispatch(fetchReviews(id));
     }
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <div className="film-card__reviews film-card__row">
