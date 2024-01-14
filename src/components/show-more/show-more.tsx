@@ -54,19 +54,17 @@ function ShowMore() {
     return null;
   }
 
-  return (
-    isShowMoreVisible && (
-      <div className="catalog__more">
-        <button
-          className="catalog__button"
-          type="button"
-          onClick={onClickShowMoreButton}
-        >
-          Show more
-        </button>
-      </div>
-    )
-  );
+  return isShowMoreVisible ? (
+    <div className="catalog__more">
+      <button
+        className="catalog__button"
+        type="button"
+        onClick={onClickShowMoreButton}
+      >
+        Show more
+      </button>
+    </div>
+  ) : null;
 }
 
 export default ShowMore;

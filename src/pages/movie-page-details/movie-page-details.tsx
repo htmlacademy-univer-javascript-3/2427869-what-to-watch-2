@@ -5,7 +5,7 @@ function MoviePageDetails() {
   const movie = useAppSelector((state) => state.films.film);
 
   // Функция для преобразования времени в формат "часы и минуты"
-  const formatRunTime = (minutes) => {
+  const formatRunTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     return `${hours}h ${mins}m`;
@@ -34,7 +34,7 @@ function MoviePageDetails() {
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Run Time</strong>
           <span className="film-card__details-value">
-            {formatRunTime(movie?.runTime)}
+            {formatRunTime(movie?.runTime as number)}
           </span>
         </p>
         <p className="film-card__details-item">

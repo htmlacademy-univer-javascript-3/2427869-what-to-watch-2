@@ -66,7 +66,7 @@ function MoviePage() {
   useEffect(() => {
     dispatch(
       getFimlsByGenre({
-        genre: movie?.genre,
+        genre: movie?.genre as string,
         moreLikeThis: true,
       })
     );
