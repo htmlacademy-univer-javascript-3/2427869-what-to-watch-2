@@ -5,10 +5,10 @@ interface IMovieListProps {
   movies: IMovies[];
 }
 
-function MovieList(props: IMovieListProps) {
+function MovieList({ movies }: IMovieListProps) {
   return (
     <>
-      {props.movies.map((movie) => (
+      {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}
     </>

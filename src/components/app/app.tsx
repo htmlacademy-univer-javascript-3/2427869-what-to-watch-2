@@ -6,7 +6,7 @@ import Player from '../../pages/player/player';
 import { AppRoutes } from '../../constants/consts';
 import PrivateRouteMyListPage from '../private-route-my-list-page/private-route-my-list-page';
 import MoviePageOverview from '../../pages/movie-page-overview/movie-page-overview';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import {
   fetchMovies,
@@ -20,9 +20,13 @@ function App() {
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('wtw-token');
 
-  useEffect(() => {
-    dispatch(fetchMovies());
+  const getMovies = useCallback(async () => {
+    await dispatch(fetchMovies());
   }, [dispatch]);
+
+  useEffect(() => {
+    getMovies();
+  }, [dispatch, getMovies]);
 
   useEffect(() => {
     if (token) {

@@ -1,3 +1,5 @@
+import { Genres } from '../constants/consts';
+
 export interface IMovies {
   id: string;
   name: string;
@@ -60,4 +62,9 @@ export interface IReview {
   user: string;
   comment: string;
   rating: number;
+}
+
+export interface IFilmByGenre {
+  countFilms: number;
+  genreName: Genres | string;
 }

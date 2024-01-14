@@ -1,5 +1,6 @@
 import { Genres } from '../../constants/consts';
 import {
+  IFilmByGenre,
   IMovie,
   IMovies,
   IProfile,
@@ -10,7 +11,8 @@ import {
 export interface IFilmsSliceInitialState {
   currentGenre: Genres;
   allFilms: IMovies[];
-  films: IMovies[];
+  countFilmsByGenre: IFilmByGenre[];
+  filmsByGenre: IMovies[];
   film: IMovie | null;
   profile: IProfile | null;
   comments: IReview[];
@@ -22,4 +24,9 @@ export interface IFilmsSliceInitialState {
   loginError: string | null;
   authorizationStatus: boolean;
   promoMovie: IPromoMovie | null;
+}
+
+export interface IGetFilmsByGenre {
+  genre: Genres | string;
+  moreLikeThis: boolean;
 }

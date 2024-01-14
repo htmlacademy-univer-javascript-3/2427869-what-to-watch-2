@@ -3,7 +3,7 @@ import { IFilmsSliceInitialState } from './films.types';
 import { Genres } from '../../constants/consts';
 import {
   setFilmsActionAction,
-  getFimlsByGenreAction,
+  // getFimlsByGenreAction,
   changeFilmsGenreAction,
   showMoreFilmsAction,
   resetCountFilmsAction,
@@ -21,12 +21,23 @@ import {
   signOutAction,
   setMyListMoviesAction,
   setMoreLikeThisMoviesAction,
+  getFimlsByGenreAction,
 } from './films.actions';
 
 const initialState: IFilmsSliceInitialState = {
   currentGenre: Genres.All,
-  films: [],
   allFilms: [],
+  countFilmsByGenre: [
+    { genreName: Genres.All, countFilms: 0 },
+    { genreName: Genres.Comedies, countFilms: 0 },
+    { genreName: Genres.Crime, countFilms: 0 },
+    { genreName: Genres.Drama, countFilms: 0 },
+    { genreName: Genres.Thriller, countFilms: 0 },
+    { genreName: Genres.Fantasy, countFilms: 0 },
+    { genreName: Genres.Action, countFilms: 0 },
+    { genreName: Genres.Adventure, countFilms: 0 },
+  ],
+  filmsByGenre: [],
   film: null,
   comments: [],
   myListMovies: [],
