@@ -1,6 +1,6 @@
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import NotFound404 from '../not-found-404/not-found-404';
-import { AppRoutes } from '../../constants/consts';
+import { AppRoutes, Genres } from '../../constants/consts';
 import MoviePageOverview from '../movie-page-overview/movie-page-overview';
 import MoviePageDetails from '../movie-page-details/movie-page-details';
 import Tabs from '../../components/tabs/tabs';
@@ -16,6 +16,12 @@ import {
 } from '../../store/slices/fimls.thunks';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import ShowMore from '../../components/show-more/show-more';
+import {
+  changeFilmsGenre,
+  getFimlsByGenre,
+  resetCountFilms,
+} from '../../store/slices/films.slice';
 
 function MoviePage() {
   const { id } = useParams();
@@ -26,6 +32,8 @@ function MoviePage() {
     (state) => state.films.moreLikeThisMovies
   );
   const isLoading = useAppSelector((state) => state.films.isLoading);
+  const filmsByGenre = useAppSelector((state) => state.films.filmsByGenre);
+  const countFilms = useAppSelector((state) => state.films.countFilms);
   const token = localStorage.getItem('wtw-token');
   const navigate = useNavigate();
 
@@ -36,6 +44,10 @@ function MoviePage() {
   }, [id, dispatch]);
 
   useEffect(() => {
+    dispatch(resetCountFilms(4));
+  }, [dispatch]);
+
+  useEffect(() => {
     fetchMovieById();
   }, [id, myListMovies, fetchMovieById]);
 
@@ -44,6 +56,21 @@ function MoviePage() {
       dispatch(fetchMoreLikeThisMovies(id));
     }
   }, [id, dispatch]);
+
+  useEffect(() => {
+    if (movie) {
+      dispatch(changeFilmsGenre(movie?.genre as Genres));
+    }
+  }, [movie, dispatch]);
+
+  useEffect(() => {
+    dispatch(
+      getFimlsByGenre({
+        genre: movie?.genre as string,
+        moreLikeThis: true,
+      })
+    );
+  }, [dispatch, movie, countFilms]);
 
   if (!movie) {
     return <NotFound404 />;
@@ -150,13 +177,14 @@ function MoviePage() {
           <h2 className="catalog__title">More like this</h2>
           <div className="catalog__films-list">
             {moreLikeThisMovies.length > 0 ? (
-              moreLikeThisMovies.map((item) => (
+              filmsByGenre.map((item) => (
                 <MovieCard key={item.id} movie={item} />
               ))
             ) : (
               <p>There&apos;re no similar movies</p>
             )}
           </div>
+          <ShowMore />
         </section>
         <Footer />
       </div>

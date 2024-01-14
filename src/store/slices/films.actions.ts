@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { IFilmsSliceInitialState } from './films.types';
+import { IFilmsSliceInitialState, IGetFilmsByGenre } from './films.types';
 import { Genres } from '../../constants/consts';
 import {
   IMovie,
@@ -11,26 +11,50 @@ import {
 
 export const getFimlsByGenreAction = (
   state: IFilmsSliceInitialState,
-  action: PayloadAction<Genres>
+  action: PayloadAction<Genres | IGetFilmsByGenre>
 ) => {
-  let filteredFilms = [];
+  let filteredFilms: IMovies[] = [];
 
   if (action.payload === Genres.All) {
-    state.films = state.allFilms.slice(0, state.countFilms);
+    filteredFilms = state.allFilms.slice(0, state.countFilms);
   } else {
     filteredFilms = state.allFilms.filter(
-      (item) => item.genre === action.payload
+      (film) => action.payload === film.genre
     );
-    state.films = filteredFilms.slice(0, state.countFilms);
   }
+
+  if (typeof action.payload === 'object' && 'genre' in action.payload) {
+    filteredFilms = state.moreLikeThisMovies.slice(0, state.countFilms);
+  }
+
+  state.filmsByGenre = filteredFilms;
 };
 
 export const setFilmsActionAction = (
   state: IFilmsSliceInitialState,
   action: PayloadAction<IMovies[]>
 ) => {
+  state.countFilmsByGenre = [
+    { genreName: Genres.All, countFilms: 0 },
+    { genreName: Genres.Comedies, countFilms: 0 },
+    { genreName: Genres.Crime, countFilms: 0 },
+    { genreName: Genres.Drama, countFilms: 0 },
+    { genreName: Genres.Thriller, countFilms: 0 },
+    { genreName: Genres.Fantasy, countFilms: 0 },
+    { genreName: Genres.Action, countFilms: 0 },
+    { genreName: Genres.Adventure, countFilms: 0 },
+  ];
+
   state.allFilms = action.payload;
-  state.films = action.payload.slice(0, state.countFilms);
+
+  state.allFilms?.map((item) => {
+    state.countFilmsByGenre.forEach((movie) => {
+      if (item.genre === movie.genreName) {
+        state.countFilmsByGenre[0].countFilms++;
+        movie.countFilms++;
+      }
+    });
+  });
 };
 
 export const changeFilmsGenreAction = (
@@ -79,15 +103,32 @@ export const setMoreLikeThisMoviesAction = (
   state: IFilmsSliceInitialState,
   action: PayloadAction<IMovies[]>
 ) => {
+  const genreName = action.payload[0].genre;
+
+  state.countFilmsByGenre = state.countFilmsByGenre.map((item) =>
+    item.genreName === genreName
+      ? {
+        genreName,
+        countFilms: action.payload.length,
+      }
+      : item
+  );
+
   state.moreLikeThisMovies = action.payload;
 };
 
-export const showMoreFilmsAction = (state: IFilmsSliceInitialState) => {
-  state.countFilms += 8;
+export const showMoreFilmsAction = (
+  state: IFilmsSliceInitialState,
+  action: PayloadAction<number>
+) => {
+  state.countFilms += action.payload;
 };
 
-export const resetCountFilmsAction = (state: IFilmsSliceInitialState) => {
-  state.countFilms = 8;
+export const resetCountFilmsAction = (
+  state: IFilmsSliceInitialState,
+  action: PayloadAction<number>
+) => {
+  state.countFilms = action.payload;
 };
 
 export const setLoaderAction = (state: IFilmsSliceInitialState) => {

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Genres } from '../../constants/consts';
 import { useAppDispatch } from '../../store/hooks';
 import { changeFilmsGenre } from '../../store/slices/films.slice';
@@ -11,6 +11,10 @@ interface IGenresListProps {
 
 function GenresListComponent(props: IGenresListProps) {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(changeFilmsGenre(Genres.All));
+  }, [dispatch]);
 
   const selectGenre = (genre: Genres) => {
     dispatch(changeFilmsGenre(genre));
@@ -45,7 +49,7 @@ function GenresListComponent(props: IGenresListProps) {
             selectGenre(Genres.Comedies);
           }}
         >
-          Comedies
+          Comedy
         </button>
       </li>
       <li
@@ -65,111 +69,77 @@ function GenresListComponent(props: IGenresListProps) {
       </li>
       <li
         className={`catalog__genres-item ${
-          props.genre === Genres.Documentary
-            ? 'catalog__genres-item--active'
-            : ''
+          props.genre === Genres.Drama ? 'catalog__genres-item--active' : ''
         }`}
       >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.onSetGenre(Genres.Documentary);
-            selectGenre(Genres.Documentary);
+            props.onSetGenre(Genres.Drama);
+            selectGenre(Genres.Drama);
           }}
         >
-          Documentary
+          Drama
         </button>
       </li>
       <li
         className={`catalog__genres-item ${
-          props.genre === Genres.Dramas ? 'catalog__genres-item--active' : ''
+          props.genre === Genres.Thriller ? 'catalog__genres-item--active' : ''
         }`}
       >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.onSetGenre(Genres.Dramas);
-            selectGenre(Genres.Dramas);
+            props.onSetGenre(Genres.Thriller);
+            selectGenre(Genres.Thriller);
           }}
         >
-          Dramas
+          Thriller
         </button>
       </li>
       <li
         className={`catalog__genres-item ${
-          props.genre === Genres.Horror ? 'catalog__genres-item--active' : ''
+          props.genre === Genres.Fantasy ? 'catalog__genres-item--active' : ''
         }`}
       >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.onSetGenre(Genres.Horror);
-            selectGenre(Genres.Horror);
+            props.onSetGenre(Genres.Fantasy);
+            selectGenre(Genres.Fantasy);
           }}
         >
-          Horror
+          Fantasy
         </button>
       </li>
       <li
         className={`catalog__genres-item ${
-          props.genre === Genres.KidsAndFamily
-            ? 'catalog__genres-item--active'
-            : ''
+          props.genre === Genres.Action ? 'catalog__genres-item--active' : ''
         }`}
       >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.onSetGenre(Genres.KidsAndFamily);
-            selectGenre(Genres.KidsAndFamily);
+            props.onSetGenre(Genres.Action);
+            selectGenre(Genres.Action);
           }}
         >
-          Kids & Family
+          Action
         </button>
       </li>
       <li
         className={`catalog__genres-item ${
-          props.genre === Genres.Romance ? 'catalog__genres-item--active' : ''
+          props.genre === Genres.Adventure ? 'catalog__genres-item--active' : ''
         }`}
       >
         <button
           className={`catalog__genres-link ${styles.button}`}
           onClick={() => {
-            props.onSetGenre(Genres.Romance);
-            selectGenre(Genres.Romance);
+            props.onSetGenre(Genres.Adventure);
+            selectGenre(Genres.Adventure);
           }}
         >
-          Romance
-        </button>
-      </li>
-      <li
-        className={`catalog__genres-item ${
-          props.genre === Genres.SciFi ? 'catalog__genres-item--active' : ''
-        }`}
-      >
-        <button
-          className={`catalog__genres-link ${styles.button}`}
-          onClick={() => {
-            props.onSetGenre(Genres.SciFi);
-            selectGenre(Genres.SciFi);
-          }}
-        >
-          Sci-Fi
-        </button>
-      </li>
-      <li
-        className={`catalog__genres-item ${
-          props.genre === Genres.Thrillers ? 'catalog__genres-item--active' : ''
-        }`}
-      >
-        <button
-          className={`catalog__genres-link ${styles.button}`}
-          onClick={() => {
-            props.onSetGenre(Genres.Thrillers);
-            selectGenre(Genres.Thrillers);
-          }}
-        >
-          Thrillers
+          Adventure
         </button>
       </li>
     </ul>

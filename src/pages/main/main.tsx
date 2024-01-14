@@ -14,7 +14,8 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 
 function Main() {
-  const movies = useAppSelector((state) => state.films.films);
+  const movies = useAppSelector((state) => state.films.allFilms);
+  const moviesByGenre = useAppSelector((state) => state.films.filmsByGenre);
   const [genre, setGenre] = useState<Genres>(Genres.All);
   const countFilms = useAppSelector((state) => state.films.countFilms);
   const isLoading = useAppSelector((state) => state.films.isLoading);
@@ -23,12 +24,17 @@ function Main() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(resetCountFilms());
+    dispatch(resetCountFilms(8));
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(getFimlsByGenre(genre));
-  }, [genre, countFilms, dispatch]);
+  }, [movies, genre, dispatch, countFilms]);
+
+  const handleSetGenre = (selectedGenre: Genres) => {
+    setGenre(selectedGenre);
+    dispatch(resetCountFilms(8));
+  };
 
   return (
     <>
@@ -46,7 +52,7 @@ function Main() {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresList genre={genre} onSetGenre={setGenre} />
+          <GenresList genre={genre} onSetGenre={handleSetGenre} />
           <div className="catalog__films-list">
             {/* eslint-disable */}
             {isLoading ? (
@@ -54,7 +60,7 @@ function Main() {
             ) : error ? (
               <p>{error}</p>
             ) : (
-              <MovieList movies={movies} />
+              <MovieList movies={moviesByGenre} />
             )}
             {/* eslint-enable */}
           </div>

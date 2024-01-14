@@ -19,13 +19,11 @@ export enum Genres {
   All = 'All genres',
   Comedies = 'Comedy',
   Crime = 'Crime',
-  Documentary = 'Documentary',
-  Dramas = 'Dramas',
-  Horror = 'Horror',
-  KidsAndFamily = 'Kids & Family',
-  Romance = 'Romance',
-  SciFi = 'Sci-Fi',
-  Thrillers = 'Thrillers',
+  Drama = 'Drama',
+  Thriller = 'Thriller',
+  Fantasy = 'Fantasy',
+  Action = 'Action',
+  Adventure = 'Adventure',
 }
 
 export const BASE_URL = 'https://13.design.pages.academy/wtw';
